@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta
+      name="description"
+      content="Personal homepage of yexca: writing, engineering, projects, and VRChat notes."
+    >
+    <title>yexca</title>
+    <link rel="icon" href="img/profile.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/profile.png">
+    <link rel="preload" href="img/background.jpg" as="image">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="background" aria-hidden="true"></div>
+    <div class="shade" aria-hidden="true"></div>
+
+    <header class="topbar" id="topbar">
+      <a class="brand" href="#home" aria-label="yexca home">
+        <span class="brand-mark">
+          <img src="img/profile.png" alt="">
+        </span>
+        <span>yexca</span>
+      </a>
+
+      <div class="top-actions">
+        <label class="language-control">
+          <span class="sr-only" data-i18n="languageLabel">Language</span>
+          <select id="languageSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="ja">日本語</option>
+          </select>
+        </label>
+        <button class="icon-button" id="settingsButton" type="button" aria-expanded="false" aria-controls="settingsPanel" data-i18n-aria="settingsOpen">
+          <span aria-hidden="true">⚙</span>
+        </button>
+      </div>
+
+      <section class="settings-panel" id="settingsPanel" aria-label="Display settings" hidden>
+        <div class="settings-head">
+          <p class="eyebrow" data-i18n="settingsTitle">Display</p>
+          <button class="subtle-button" id="settingsReset" type="button" data-i18n="settingsReset">Reset</button>
+        </div>
+        <label class="setting-row">
+          <span data-i18n="settingBgBlur">Background blur</span>
+          <input id="backgroundBlur" type="range" min="0" max="12" step="1">
+        </label>
+        <label class="setting-row">
+          <span data-i18n="settingTint">Tint strength</span>
+          <input id="tintStrength" type="range" min="20" max="82" step="1">
+        </label>
+        <label class="setting-row color-row">
+          <span data-i18n="settingText">Text color</span>
+          <input id="textColor" type="color">
+        </label>
+      </section>
+    </header>
+
+    <main id="home" class="shell">
+      <section class="grid" aria-label="yexca profile">
+        <article class="card hero-card span-7">
+          <p class="eyebrow" data-i18n="heroEyebrow">personal space</p>
+          <h1 data-i18n="heroTitle">Hi, I'm yexca.</h1>
+          <p class="hero-copy" data-i18n="heroCopy">
+            I write code, organize knowledge, tinker with systems, and build little bridges between engineering and virtual worlds.
+          </p>
+          <div class="hero-actions" aria-label="Primary links">
+            <a class="button primary" href="https://blog.yexca.net/" data-blog-link data-i18n="visitBlog">Visit blog</a>
+            <a class="button" href="https://github.com/yexca" data-i18n="github">GitHub</a>
+          </div>
+        </article>
+
+        <article class="card status-card span-5">
+          <div class="card-head">
+            <p class="eyebrow" data-i18n="nowEyebrow">now</p>
+            <span class="pulse" aria-hidden="true"></span>
+          </div>
+          <h2 data-i18n="nowTitle">Keeping things understandable.</h2>
+          <p data-i18n="nowCopy">
+            Studying system design, backend architecture, DevOps, cross-platform apps, and the small rituals that keep a personal knowledge base alive.
+          </p>
+        </article>
+
+        <article class="card writing-card span-5">
+          <div class="card-head">
+            <p class="eyebrow" data-i18n="writingEyebrow">writing</p>
+            <a class="subtle-link" href="https://blog.yexca.net/feed.xml" data-rss-link data-i18n="rss">RSS</a>
+          </div>
+          <h2 data-i18n="writingTitle">Latest notes</h2>
+          <div id="posts" class="post-list" aria-live="polite">
+            <a class="post-item" href="https://blog.yexca.net/" data-blog-link>
+              <span data-i18n="fallbackPostTitle">Technical notes and life records</span>
+              <time data-i18n="fallbackPostDate">Blog</time>
+            </a>
+          </div>
+        </article>
+
+        <article class="card projects-card span-7">
+          <div class="card-head">
+            <p class="eyebrow" data-i18n="projectsEyebrow">projects</p>
+            <a class="subtle-link" href="https://github.com/yexca?tab=repositories" data-i18n="allRepos">All repos</a>
+          </div>
+          <h2 data-i18n="projectsTitle">Selected work</h2>
+          <div class="project-list">
+            <a class="project-item" href="https://github.com/yexca/blog" data-project="blog">
+              <span data-i18n="projectBlog">Blog and publishing system</span>
+              <small data-i18n="projectBlogMeta">Hugo, multilingual writing, CI/CD</small>
+            </a>
+            <a class="project-item" href="https://github.com/yexca/PixivDownloader-SQLite" data-project="pixiv">
+              <span data-i18n="projectPixiv">PixivDownloader-SQLite</span>
+              <small data-i18n="projectPixivMeta">Desktop utility, SQLite, media archiving</small>
+            </a>
+            <a class="project-item" href="https://github.com/yexca/Data-element-market" data-project="dataMarket">
+              <span data-i18n="projectData">Graduation design system</span>
+              <small data-i18n="projectDataMeta">Data element market, full-stack system practice</small>
+            </a>
+          </div>
+          <p class="section-note" data-i18n="githubActivity">Recent GitHub activity</p>
+          <div class="repo-strip" id="repos" aria-live="polite"></div>
+        </article>
+
+        <article class="card vr-card span-4">
+          <p class="eyebrow" data-i18n="vrEyebrow">vrchat</p>
+          <h2 data-i18n="vrTitle">Virtual world notes</h2>
+          <p data-i18n="vrCopy">
+            Tutorials and experiments around VRChat, 3D models, Blender, Unity, and the patient work of making a world feel usable.
+          </p>
+          <a class="button compact" href="https://github.com/yexca-VRChat" data-i18n="vrLink">VRChat GitHub</a>
+        </article>
+
+        <article class="card interests-card span-4">
+          <p class="eyebrow" data-i18n="interestsEyebrow">interests</p>
+          <h2 data-i18n="interestsTitle">Things I keep returning to</h2>
+          <ul class="tag-list" aria-label="Interests">
+            <li data-i18n="interestBackend">Backend architecture</li>
+            <li data-i18n="interestDevops">DevOps</li>
+            <li data-i18n="interestLinux">Linux</li>
+            <li data-i18n="interestApps">Cross-platform apps</li>
+            <li data-i18n="interestWriting">Writing</li>
+            <li data-i18n="interestVR">Virtual creation</li>
+          </ul>
+        </article>
+
+        <article class="card links-card span-4">
+          <p class="eyebrow" data-i18n="linksEyebrow">links</p>
+          <nav class="link-grid" aria-label="Links">
+            <a href="https://blog.yexca.net/" data-blog-link>Blog</a>
+            <a href="https://github.com/yexca">GitHub</a>
+            <a href="https://github.com/yexca-VRChat">VRChat</a>
+            <a href="https://lit.link/yexca">lit.link</a>
+          </nav>
+        </article>
+
+        <aside class="card quote-card span-12">
+          <p data-i18n="quote">There is no such thing as no possible. It is just because of the lack of imagination.</p>
+          <small class="credit">
+            © 2026 yexca. Background source:
+            <a href="https://www.pixiv.net/artworks/76371065">pixiv artwork 76371065</a>.
+          </small>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
