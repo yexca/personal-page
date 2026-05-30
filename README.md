@@ -12,7 +12,7 @@ The page uses plain HTML, CSS, and JavaScript. It has no build step and can be h
 - Manual language switcher
 - Blog RSS loading per language
 - Recent GitHub repository activity
-- Display settings for background blur, tint strength, and text color
+- Preset display settings for background style and text color
 - Static assets only
 
 ## Local Preview

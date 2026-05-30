@@ -46,18 +46,23 @@
           <p class="eyebrow" data-i18n="settingsTitle">Display</p>
           <button class="subtle-button" id="settingsReset" type="button" data-i18n="settingsReset">Reset</button>
         </div>
-        <label class="setting-row">
-          <span data-i18n="settingBgBlur">Background blur</span>
-          <input id="backgroundBlur" type="range" min="0" max="12" step="1">
-        </label>
-        <label class="setting-row">
-          <span data-i18n="settingTint">Tint strength</span>
-          <input id="tintStrength" type="range" min="20" max="82" step="1">
-        </label>
-        <label class="setting-row color-row">
+        <div class="setting-row">
+          <span data-i18n="settingBackground">Background style</span>
+          <div class="preset-grid" role="group" aria-label="Background style">
+            <button type="button" data-background-preset="soft" data-i18n="presetSoft">Soft</button>
+            <button type="button" data-background-preset="heavy" data-i18n="presetHeavy">Heavy blur</button>
+            <button type="button" data-background-preset="frosted" data-i18n="presetFrosted">Frosted</button>
+            <button type="button" data-background-preset="mdui" data-i18n="presetMdui">MDUI</button>
+          </div>
+        </div>
+        <div class="setting-row">
           <span data-i18n="settingText">Text color</span>
-          <input id="textColor" type="color">
-        </label>
+          <div class="preset-grid color-presets" role="group" aria-label="Text color">
+            <button type="button" data-text-preset="white" data-i18n="textWhite">White</button>
+            <button type="button" data-text-preset="pink" data-i18n="textPink">Pink</button>
+            <button type="button" data-text-preset="black" data-i18n="textBlack">Black</button>
+          </div>
+        </div>
       </section>
     </header>
 

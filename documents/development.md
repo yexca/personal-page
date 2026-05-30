@@ -82,25 +82,21 @@ If GitHub loading fails, the static selected project cards still remain visible.
 
 ## Display Settings
 
-The settings panel controls:
+The settings panel controls preset display choices:
 
-- Background blur
-- Tint strength
-- Text color
+- Background style: soft, heavy blur, frosted, MDUI
+- Text color: white, pink, black
 
 Settings are saved to `localStorage.displaySettings`.
 
-CSS custom properties controlled by JavaScript:
+The active presets are applied as attributes on the root element:
 
-- `--text`
-- `--text-rgb`
-- `--background-blur`
-- `--background-scale`
-- `--tint-alpha`
-- `--tint-mid-alpha`
-- `--tint-end-alpha`
+- `data-bg-preset`
+- `data-text-preset`
 
-The reset button restores the defaults defined in `defaultDisplaySettings`.
+CSS custom properties are then resolved from those preset attributes. The reset button restores the defaults defined in `defaultDisplaySettings`.
+
+The presets intentionally replace free-form sliders to avoid unreadable visual combinations. When adding a new visual theme, prefer adding a new `data-bg-preset` or `data-text-preset` branch in CSS instead of exposing more raw controls.
 
 ## Deployment
 
@@ -121,7 +117,7 @@ Recommended manual checks before publishing:
 
 - Open `http://localhost:4173/`.
 - Switch all four languages.
-- Open the display settings panel and test all controls.
+- Open the display settings panel and test all preset choices.
 - Confirm RSS posts load for each language.
 - Confirm GitHub activity appears.
 - Check desktop and mobile widths.

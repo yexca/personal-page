@@ -21,9 +21,8 @@ const GITHUB_REPOS = [
   "https://api.github.com/users/yexca-VRChat/repos?sort=updated&per_page=4",
 ];
 const defaultDisplaySettings = {
-  backgroundBlur: 0,
-  tintStrength: 58,
-  textColor: "#f4f7f5",
+  backgroundPreset: "soft",
+  textPreset: "white",
 };
 
 const translations = {
@@ -58,9 +57,15 @@ const translations = {
     settingsClose: "Close display settings",
     settingsTitle: "Display",
     settingsReset: "Reset",
-    settingBgBlur: "Background blur",
-    settingTint: "Tint strength",
+    settingBackground: "Background style",
     settingText: "Text color",
+    presetSoft: "Soft",
+    presetHeavy: "Heavy blur",
+    presetFrosted: "Frosted",
+    presetMdui: "MDUI",
+    textWhite: "White",
+    textPink: "Pink",
+    textBlack: "Black",
     vrEyebrow: "vrchat",
     vrTitle: "Virtual world notes",
     vrCopy:
@@ -110,9 +115,15 @@ const translations = {
     settingsClose: "关闭显示设置",
     settingsTitle: "显示",
     settingsReset: "重置",
-    settingBgBlur: "背景模糊",
-    settingTint: "暗色强度",
+    settingBackground: "背景样式",
     settingText: "文字颜色",
+    presetSoft: "轻薄",
+    presetHeavy: "重模糊",
+    presetFrosted: "毛玻璃",
+    presetMdui: "MDUI",
+    textWhite: "白色",
+    textPink: "粉色",
+    textBlack: "黑色",
     vrEyebrow: "VRChat",
     vrTitle: "虚拟世界相关",
     vrCopy:
@@ -161,9 +172,15 @@ const translations = {
     settingsClose: "關閉顯示設定",
     settingsTitle: "顯示",
     settingsReset: "重設",
-    settingBgBlur: "背景模糊",
-    settingTint: "暗色強度",
+    settingBackground: "背景樣式",
     settingText: "文字顏色",
+    presetSoft: "輕薄",
+    presetHeavy: "重模糊",
+    presetFrosted: "毛玻璃",
+    presetMdui: "MDUI",
+    textWhite: "白色",
+    textPink: "粉色",
+    textBlack: "黑色",
     vrEyebrow: "VRChat",
     vrTitle: "虛擬世界相關",
     vrCopy:
@@ -212,9 +229,15 @@ const translations = {
     settingsClose: "表示設定を閉じる",
     settingsTitle: "表示",
     settingsReset: "リセット",
-    settingBgBlur: "背景ぼかし",
-    settingTint: "暗さ",
+    settingBackground: "背景スタイル",
     settingText: "文字色",
+    presetSoft: "薄め",
+    presetHeavy: "強いぼかし",
+    presetFrosted: "すりガラス",
+    presetMdui: "MDUI",
+    textWhite: "白",
+    textPink: "ピンク",
+    textBlack: "黒",
     vrEyebrow: "VRChat",
     vrTitle: "仮想世界のノート",
     vrCopy:
@@ -281,12 +304,6 @@ function applyLanguage(language) {
   renderCachedDynamicContent();
 }
 
-function hexToRgb(hex) {
-  const normalized = hex.replace("#", "");
-  const value = Number.parseInt(normalized, 16);
-  return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
-}
-
 function loadDisplaySettings() {
   try {
     return {
@@ -303,28 +320,28 @@ function saveDisplaySettings(settings) {
 }
 
 function applyDisplaySettings(settings) {
-  const [r, g, b] = hexToRgb(settings.textColor);
-  const tint = Number(settings.tintStrength) / 100;
-  const blur = Number(settings.backgroundBlur);
+  const backgroundPreset = ["soft", "heavy", "frosted", "mdui"].includes(settings.backgroundPreset)
+    ? settings.backgroundPreset
+    : defaultDisplaySettings.backgroundPreset;
+  const textPreset = ["white", "pink", "black"].includes(settings.textPreset)
+    ? settings.textPreset
+    : defaultDisplaySettings.textPreset;
 
-  document.documentElement.style.setProperty("--text", settings.textColor);
-  document.documentElement.style.setProperty("--text-rgb", `${r}, ${g}, ${b}`);
-  document.documentElement.style.setProperty("--background-blur", `${blur}px`);
-  document.documentElement.style.setProperty("--background-scale", blur > 0 ? "1.025" : "1");
-  document.documentElement.style.setProperty("--tint-alpha", tint.toFixed(2));
-  document.documentElement.style.setProperty("--tint-mid-alpha", Math.max(tint - 0.24, 0.12).toFixed(2));
-  document.documentElement.style.setProperty("--tint-end-alpha", Math.max(tint - 0.04, 0.16).toFixed(2));
+  document.documentElement.dataset.bgPreset = backgroundPreset;
+  document.documentElement.dataset.textPreset = textPreset;
 
-  document.getElementById("backgroundBlur").value = settings.backgroundBlur;
-  document.getElementById("tintStrength").value = settings.tintStrength;
-  document.getElementById("textColor").value = settings.textColor;
+  document.querySelectorAll("[data-background-preset]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.backgroundPreset === backgroundPreset));
+  });
+  document.querySelectorAll("[data-text-preset]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.textPreset === textPreset));
+  });
 }
 
 function setupDisplaySettings() {
   const settingsButton = document.getElementById("settingsButton");
   const settingsPanel = document.getElementById("settingsPanel");
   const resetButton = document.getElementById("settingsReset");
-  const controlIds = ["backgroundBlur", "tintStrength", "textColor"];
   let settings = loadDisplaySettings();
 
   applyDisplaySettings(settings);
@@ -337,13 +354,17 @@ function setupDisplaySettings() {
     settingsButton.setAttribute("aria-label", t(settingsButton.dataset.i18nAria));
   });
 
-  controlIds.forEach((id) => {
-    document.getElementById(id).addEventListener("input", () => {
-      settings = {
-        backgroundBlur: Number(document.getElementById("backgroundBlur").value),
-        tintStrength: Number(document.getElementById("tintStrength").value),
-        textColor: document.getElementById("textColor").value,
-      };
+  document.querySelectorAll("[data-background-preset]").forEach((button) => {
+    button.addEventListener("click", () => {
+      settings = { ...settings, backgroundPreset: button.dataset.backgroundPreset };
+      applyDisplaySettings(settings);
+      saveDisplaySettings(settings);
+    });
+  });
+
+  document.querySelectorAll("[data-text-preset]").forEach((button) => {
+    button.addEventListener("click", () => {
+      settings = { ...settings, textPreset: button.dataset.textPreset };
       applyDisplaySettings(settings);
       saveDisplaySettings(settings);
     });
