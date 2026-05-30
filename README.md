@@ -11,19 +11,30 @@ The page uses plain HTML, CSS, and JavaScript. It has no build step and can be h
 - Browser language detection with English fallback
 - Manual language switcher
 - Blog RSS loading per language
-- Recent GitHub repository activity
+- Recent GitHub repository cards with latest non-bot commit messages
 - Preset display settings for background style and text color
 - Static assets only
 
 ## Local Preview
 
-Open `index.html`
+```sh
+python -m http.server 4173
+```
+
+Then open:
+
+```text
+http://localhost:4173/
+```
+
+The page loads `site.config.json`, so previewing through a local static server is recommended.
 
 ## Files
 
 - `index.html`: page structure
 - `style.css`: layout, glass effects, responsive design
-- `script.js`: translations, RSS loading, GitHub activity, display settings
+- `script.js`: config loading, RSS loading, GitHub activity, display settings
+- `site.config.json`: editable site content, links, translations, RSS endpoints, project cards, and defaults
 - `img/background.jpg`: page background
 - `img/profile.png`: avatar and favicon
 - `documents/development.md`: development notes

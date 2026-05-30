@@ -1,297 +1,243 @@
-const BLOG_ENDPOINTS = {
-  en: {
-    blog: "https://blog.yexca.net/en/",
-    feed: "https://blog.yexca.net/en/feed.xml",
-  },
-  "zh-CN": {
-    blog: "https://blog.yexca.net/",
-    feed: "https://blog.yexca.net/feed.xml",
-  },
-  "zh-TW": {
-    blog: "https://blog.yexca.net/zh-tw/",
-    feed: "https://blog.yexca.net/zh-tw/feed.xml",
-  },
-  ja: {
-    blog: "https://blog.yexca.net/ja/",
-    feed: "https://blog.yexca.net/ja/feed.xml",
-  },
-};
-const GITHUB_REPOS = [
-  "https://api.github.com/users/yexca/repos?sort=updated&per_page=6",
-  "https://api.github.com/users/yexca-VRChat/repos?sort=updated&per_page=4",
-];
-const defaultDisplaySettings = {
-  backgroundPreset: "soft",
-  textPreset: "white",
-};
-
-const translations = {
-  en: {
-    languageLabel: "Language",
-    heroEyebrow: "personal space",
-    heroTitle: "Hi, I'm yexca.",
-    heroCopy:
-      "I write code, organize knowledge, tinker with systems, and build little bridges between engineering and virtual worlds.",
-    visitBlog: "Visit blog",
-    github: "GitHub",
-    nowEyebrow: "now",
-    nowTitle: "Keeping things understandable.",
-    nowCopy:
-      "Learning computer vision, AI, lightweight deployment, and still tinkering with the blog as a living knowledge base.",
-    writingEyebrow: "writing",
-    rss: "RSS",
-    writingTitle: "Latest notes",
-    fallbackPostTitle: "Technical notes and life records",
-    fallbackPostDate: "Blog",
-    projectsEyebrow: "projects",
-    allRepos: "All repos",
-    projectsTitle: "Selected work",
-    projectBlog: "Blog and publishing system",
-    projectBlogMeta: "Hugo, multilingual writing, CI/CD",
-    projectPixiv: "PixivDownloader-SQLite",
-    projectPixivMeta: "Desktop utility, SQLite, media archiving",
-    projectData: "Graduation design system",
-    projectDataMeta: "Data element market, full-stack system practice",
-    githubActivity: "Recent GitHub activity",
-    settingsOpen: "Open display settings",
-    settingsClose: "Close display settings",
-    settingsTitle: "Display",
-    settingsReset: "Reset",
-    settingBackground: "Background style",
-    settingText: "Text color",
-    presetSoft: "Soft",
-    presetHeavy: "Heavy blur",
-    presetFrosted: "Frosted",
-    presetMdui: "MDUI",
-    textWhite: "White",
-    textPink: "Pink",
-    textBlack: "Black",
-    vrEyebrow: "vrchat",
-    vrTitle: "Virtual world notes",
-    vrCopy:
-      "Tutorials and experiments around VRChat, 3D models, Blender, Unity, and the patient work of making a world feel usable.",
-    vrLink: "VRChat GitHub",
-    interestsEyebrow: "interests",
-    interestsTitle: "Things I keep returning to",
-    interestBackend: "Backend architecture",
-    interestDevops: "DevOps",
-    interestLinux: "Linux",
-    interestApps: "Cross-platform apps",
-    interestWriting: "Writing",
-    interestVR: "Virtual creation",
-    linksEyebrow: "links",
-    quote:
-      "There is no such thing as no possible. It is just because of the lack of imagination.",
-    updated: "Updated",
-  },
-  "zh-CN": {
-    languageLabel: "语言",
-    heroEyebrow: "个人空间",
-    heroTitle: "你好，我是 yexca。",
-    heroCopy:
-      "写代码，整理知识，折腾系统，也在工程与虚拟世界之间搭一些小小的桥。",
-    visitBlog: "访问博客",
-    github: "GitHub",
-    nowEyebrow: "现在",
-    nowTitle: "把事情整理到可以理解。",
-    nowCopy:
-      "正在学习 CV、AI、轻量化部署，也继续折腾博客，让个人知识库保持生长。",
-    writingEyebrow: "写作",
-    rss: "RSS",
-    writingTitle: "最新记录",
-    fallbackPostTitle: "技术笔记与生活记录",
-    fallbackPostDate: "博客",
-    projectsEyebrow: "项目",
-    allRepos: "全部仓库",
-    projectsTitle: "一些作品",
-    projectBlog: "博客与发布系统",
-    projectBlogMeta: "Hugo、多语言写作、CI/CD",
-    projectPixiv: "PixivDownloader-SQLite",
-    projectPixivMeta: "桌面工具、SQLite、媒体归档",
-    projectData: "毕业设计系统",
-    projectDataMeta: "数据要素市场，全栈系统实践",
-    githubActivity: "近期 GitHub 更新",
-    settingsOpen: "打开显示设置",
-    settingsClose: "关闭显示设置",
-    settingsTitle: "显示",
-    settingsReset: "重置",
-    settingBackground: "背景样式",
-    settingText: "文字颜色",
-    presetSoft: "轻薄",
-    presetHeavy: "重模糊",
-    presetFrosted: "毛玻璃",
-    presetMdui: "MDUI",
-    textWhite: "白色",
-    textPink: "粉色",
-    textBlack: "黑色",
-    vrEyebrow: "VRChat",
-    vrTitle: "虚拟世界相关",
-    vrCopy:
-      "关于 VRChat、3D 模型、Blender、Unity 的教程和实验，以及让虚拟空间变得可用的耐心工作。",
-    vrLink: "VRChat GitHub",
-    interestsEyebrow: "兴趣",
-    interestsTitle: "总会回到的东西",
-    interestBackend: "后端架构",
-    interestDevops: "DevOps",
-    interestLinux: "Linux",
-    interestApps: "跨平台应用",
-    interestWriting: "写作",
-    interestVR: "虚拟创作",
-    linksEyebrow: "链接",
-    quote: "世上没有不可能，只是想象力不够。",
-    updated: "更新于",
-  },
-  "zh-TW": {
-    languageLabel: "語言",
-    heroEyebrow: "個人空間",
-    heroTitle: "你好，我是 yexca。",
-    heroCopy:
-      "寫程式，整理知識，折騰系統，也在工程與虛擬世界之間搭一些小小的橋。",
-    visitBlog: "前往部落格",
-    github: "GitHub",
-    nowEyebrow: "現在",
-    nowTitle: "把事情整理到可以理解。",
-    nowCopy:
-      "正在學習 CV、AI、輕量化部署，也繼續折騰部落格，讓個人知識庫保持生長。",
-    writingEyebrow: "寫作",
-    rss: "RSS",
-    writingTitle: "最新記錄",
-    fallbackPostTitle: "技術筆記與生活記錄",
-    fallbackPostDate: "部落格",
-    projectsEyebrow: "專案",
-    allRepos: "全部倉庫",
-    projectsTitle: "一些作品",
-    projectBlog: "部落格與發布系統",
-    projectBlogMeta: "Hugo、多語言寫作、CI/CD",
-    projectPixiv: "PixivDownloader-SQLite",
-    projectPixivMeta: "桌面工具、SQLite、媒體歸檔",
-    projectData: "畢業設計系統",
-    projectDataMeta: "數據要素市場，全端系統實踐",
-    githubActivity: "近期 GitHub 更新",
-    settingsOpen: "開啟顯示設定",
-    settingsClose: "關閉顯示設定",
-    settingsTitle: "顯示",
-    settingsReset: "重設",
-    settingBackground: "背景樣式",
-    settingText: "文字顏色",
-    presetSoft: "輕薄",
-    presetHeavy: "重模糊",
-    presetFrosted: "毛玻璃",
-    presetMdui: "MDUI",
-    textWhite: "白色",
-    textPink: "粉色",
-    textBlack: "黑色",
-    vrEyebrow: "VRChat",
-    vrTitle: "虛擬世界相關",
-    vrCopy:
-      "關於 VRChat、3D 模型、Blender、Unity 的教學和實驗，以及讓虛擬空間變得可用的耐心工作。",
-    vrLink: "VRChat GitHub",
-    interestsEyebrow: "興趣",
-    interestsTitle: "總會回到的東西",
-    interestBackend: "後端架構",
-    interestDevops: "DevOps",
-    interestLinux: "Linux",
-    interestApps: "跨平台應用",
-    interestWriting: "寫作",
-    interestVR: "虛擬創作",
-    linksEyebrow: "連結",
-    quote: "世上沒有不可能，只是想像力不夠。",
-    updated: "更新於",
-  },
-  ja: {
-    languageLabel: "言語",
-    heroEyebrow: "personal space",
-    heroTitle: "こんにちは、yexcaです。",
-    heroCopy:
-      "コードを書き、知識を整理し、システムを触りながら、エンジニアリングと仮想世界の間に小さな橋を作っています。",
-    visitBlog: "ブログへ",
-    github: "GitHub",
-    nowEyebrow: "now",
-    nowTitle: "理解できる形に整える。",
-    nowCopy:
-      "CV、AI、軽量化デプロイを学びながら、個人の知識ベースとしてブログも引き続き整えています。",
-    writingEyebrow: "writing",
-    rss: "RSS",
-    writingTitle: "最近の記事",
-    fallbackPostTitle: "技術ノートと生活の記録",
-    fallbackPostDate: "Blog",
-    projectsEyebrow: "projects",
-    allRepos: "すべてのリポジトリ",
-    projectsTitle: "作品",
-    projectBlog: "ブログと公開システム",
-    projectBlogMeta: "Hugo、多言語記事、CI/CD",
-    projectPixiv: "PixivDownloader-SQLite",
-    projectPixivMeta: "デスクトップツール、SQLite、メディア整理",
-    projectData: "卒業設計システム",
-    projectDataMeta: "データ要素市場、フルスタック実践",
-    githubActivity: "最近の GitHub 更新",
-    settingsOpen: "表示設定を開く",
-    settingsClose: "表示設定を閉じる",
-    settingsTitle: "表示",
-    settingsReset: "リセット",
-    settingBackground: "背景スタイル",
-    settingText: "文字色",
-    presetSoft: "薄め",
-    presetHeavy: "強いぼかし",
-    presetFrosted: "すりガラス",
-    presetMdui: "MDUI",
-    textWhite: "白",
-    textPink: "ピンク",
-    textBlack: "黒",
-    vrEyebrow: "VRChat",
-    vrTitle: "仮想世界のノート",
-    vrCopy:
-      "VRChat、3Dモデル、Blender、Unity に関するチュートリアルと実験、そして使いやすい仮想空間を作るための試行錯誤。",
-    vrLink: "VRChat GitHub",
-    interestsEyebrow: "interests",
-    interestsTitle: "何度も戻ってくるもの",
-    interestBackend: "バックエンド設計",
-    interestDevops: "DevOps",
-    interestLinux: "Linux",
-    interestApps: "クロスプラットフォーム",
-    interestWriting: "執筆",
-    interestVR: "バーチャル制作",
-    linksEyebrow: "links",
-    quote: "不可能なんてない。足りないのは想像力だけ。",
-    updated: "更新",
+const fallbackConfig = {
+  site: { title: "yexca" },
+  assets: { background: "img/background.jpg", profile: "img/profile.png" },
+  defaultDisplaySettings: { backgroundPreset: "soft", textPreset: "white" },
+  languages: ["en"],
+  blogEndpoints: { en: { blog: "https://blog.yexca.net/en/", feed: "https://blog.yexca.net/en/feed.xml" } },
+  githubRepos: [],
+  githubIgnoredCommitAuthors: ["github-actions[bot]", "github-actions"],
+  githubIgnoredCommitMessagePrefixes: ["deploy:"],
+  links: [],
+  nowItems: [],
+  projects: [],
+  interests: [],
+  translations: {
+    en: {
+      languageLabel: "Language",
+      settingsOpen: "Open display settings",
+      settingsClose: "Close display settings",
+      updated: "Updated",
+      commit: "Commit",
+    },
   },
 };
 
-const supportedLanguages = Object.keys(translations);
-let currentLanguage = detectLanguage();
+let config = fallbackConfig;
+let currentLanguage = "en";
 let cachedPosts = [];
 let cachedRepos = [];
 let loadedPostLanguage = "";
 
+async function loadConfig() {
+  try {
+    const response = await fetch("site.config.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Config unavailable");
+    config = await response.json();
+  } catch {
+    config = fallbackConfig;
+  }
+}
+
+function supportedLanguages() {
+  return config.languages ?? Object.keys(config.translations);
+}
+
 function detectLanguage() {
+  const supported = supportedLanguages();
   const saved = localStorage.getItem("language");
-  if (supportedLanguages.includes(saved)) return saved;
+  if (supported.includes(saved)) return saved;
 
   const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
   for (const language of browserLanguages) {
     if (!language) continue;
     const normalized = language.toLowerCase();
-    if (normalized === "zh-cn" || normalized === "zh-hans") return "zh-CN";
-    if (normalized === "zh-tw" || normalized === "zh-hant" || normalized === "zh-hk") return "zh-TW";
-    if (normalized.startsWith("ja")) return "ja";
-    if (normalized.startsWith("en")) return "en";
+    if ((normalized === "zh-cn" || normalized === "zh-hans") && supported.includes("zh-CN")) return "zh-CN";
+    if ((normalized === "zh-tw" || normalized === "zh-hant" || normalized === "zh-hk") && supported.includes("zh-TW")) return "zh-TW";
+    if (normalized.startsWith("ja") && supported.includes("ja")) return "ja";
+    if (normalized.startsWith("en") && supported.includes("en")) return "en";
   }
 
-  return "en";
+  return supported.includes("en") ? "en" : supported[0];
 }
 
 function t(key) {
-  return translations[currentLanguage]?.[key] ?? translations.en[key] ?? key;
+  return config.translations?.[currentLanguage]?.[key] ?? config.translations?.en?.[key] ?? key;
+}
+
+function localizeTitle(value) {
+  return value.replace(/(yexca(?:\s*です)?[.。]?)/, "<span>$1</span>");
+}
+
+function applyStaticConfig() {
+  document.title = config.site?.title ?? "yexca";
+  const description = document.querySelector('meta[name="description"]');
+  if (description && config.site?.description) description.content = config.site.description;
+
+  document.querySelectorAll("[data-profile-src]").forEach((node) => {
+    node.src = config.assets?.profile ?? "img/profile.png";
+  });
+  document.querySelectorAll("[data-profile-href]").forEach((node) => {
+    node.href = config.assets?.profile ?? "img/profile.png";
+  });
+  document.querySelectorAll("[data-background-href]").forEach((node) => {
+    node.href = config.assets?.background ?? "img/background.jpg";
+  });
+  document.documentElement.style.setProperty("--background-image", `url("${config.assets?.background ?? "img/background.jpg"}")`);
+
+  renderProjects();
+  renderLinks();
+  renderVrLinks();
+  renderNowItems();
+  renderInterests();
+  renderFooterCredit();
+}
+
+function renderProjects() {
+  const list = document.getElementById("projectList");
+  if (!list) return;
+
+  list.replaceChildren(
+    ...(config.projects ?? []).map((project) => {
+      const link = document.createElement("a");
+      const title = document.createElement("span");
+      const meta = document.createElement("small");
+
+      link.className = "project-item";
+      if (project.disabled) {
+        link.classList.add("is-disabled");
+        link.setAttribute("aria-disabled", "true");
+        link.tabIndex = -1;
+      } else {
+        link.href = project.href;
+      }
+      title.dataset.i18n = project.titleKey;
+      meta.dataset.i18n = project.metaKey;
+
+      link.append(title, meta);
+      return link;
+    }),
+  );
+}
+
+function localizedHref(item) {
+  if (!item.hrefs) return item.href;
+  return item.hrefs[currentLanguage] ?? item.hrefs.en ?? Object.values(item.hrefs)[0];
+}
+
+function renderVrLinks() {
+  const wrapper = document.getElementById("vrLinks");
+  if (!wrapper) return;
+
+  wrapper.replaceChildren(
+    ...(config.vrLinks ?? []).map((item, index) => {
+      const link = document.createElement("a");
+      link.className = "button compact";
+      link.href = localizedHref(item);
+      link.dataset.i18n = item.labelKey;
+      if (item.hrefs) link.dataset.vrLinkIndex = String(index);
+      return link;
+    }),
+  );
+}
+
+function renderInterests() {
+  renderCategoryList("interestList", config.interests ?? []);
+}
+
+function renderNowItems() {
+  renderCategoryList("nowList", config.nowItems ?? []);
+}
+
+function renderCategoryList(id, groups) {
+  const list = document.getElementById(id);
+  if (!list) return;
+
+  list.replaceChildren(
+    ...groups.map((group) => {
+      const section = document.createElement("div");
+      const label = document.createElement("span");
+      const tags = document.createElement("ul");
+
+      section.className = "category-group";
+      label.className = "category-label";
+      label.dataset.i18n = group.labelKey;
+      tags.className = "tag-list";
+
+      tags.replaceChildren(
+        ...(group.items ?? []).map((key) => {
+          const item = document.createElement("li");
+          item.dataset.i18n = key;
+          return item;
+        }),
+      );
+
+      section.append(label, tags);
+      return section;
+    }),
+  );
+}
+
+function renderLinks() {
+  const nav = document.getElementById("linkGrid");
+  if (!nav) return;
+
+  nav.replaceChildren(
+    ...(config.links ?? []).map((item) => {
+      const link = document.createElement("a");
+      const icon = document.createElement("span");
+      const label = document.createElement("span");
+
+      icon.className = "link-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.innerHTML = linkIconSvg(item.icon ?? item.label);
+      label.textContent = item.label;
+      if (item.hrefKey === "blog") {
+        link.dataset.blogLink = "";
+        link.href = currentBlogEndpoint().blog;
+      } else {
+        link.href = item.href;
+      }
+      link.append(icon, label);
+      return link;
+    }),
+  );
+}
+
+function linkIconSvg(name) {
+  const key = name.toLowerCase();
+  const icons = {
+    email: '<svg viewBox="0 0 24 24" focusable="false"><path d="M4.5 6.5h15v11h-15z"/><path d="m5 7 7 6 7-6"/></svg>',
+    bilibili: '<svg viewBox="0 0 24 24" focusable="false"><path d="M7 5 4.5 2.5"/><path d="M17 5l2.5-2.5"/><rect x="4" y="6" width="16" height="13" rx="3"/><path d="M9 11v3"/><path d="M15 11v3"/></svg>',
+    youtube: '<svg viewBox="0 0 24 24" focusable="false"><path d="M21 12s0-4-1-5c-.7-.7-1.5-.8-2.5-.9C16 6 12 6 12 6s-4 0-5.5.1C5.5 6.2 4.7 6.3 4 7c-1 1-1 5-1 5s0 4 1 5c.7.7 1.5.8 2.5.9C8 18 12 18 12 18s4 0 5.5-.1c1-.1 1.8-.2 2.5-.9 1-1 1-5 1-5Z"/><path d="m10 9 5 3-5 3Z"/></svg>',
+    link: '<svg viewBox="0 0 24 24" focusable="false"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1.3-1.3"/></svg>',
+  };
+
+  if (key.includes("mail")) return icons.email;
+  if (key.includes("bilibili")) return icons.bilibili;
+  if (key.includes("youtube")) return icons.youtube;
+  return icons.link;
+}
+
+function renderFooterCredit() {
+  const credit = document.getElementById("footerCredit");
+  if (!credit || !config.footerCredit) return;
+  const link = document.createElement("a");
+  link.href = config.footerCredit.href;
+  link.textContent = config.footerCredit.label;
+
+  credit.replaceChildren(`${config.footerCredit.prefix} `, link, config.footerCredit.suffix ?? "");
 }
 
 function applyLanguage(language) {
-  currentLanguage = supportedLanguages.includes(language) ? language : "en";
+  const supported = supportedLanguages();
+  currentLanguage = supported.includes(language) ? language : (supported.includes("en") ? "en" : supported[0]);
   localStorage.setItem("language", currentLanguage);
   document.documentElement.lang = currentLanguage.toLowerCase();
+
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const value = t(node.dataset.i18n);
     if (node.matches("h1")) {
-      node.innerHTML = value.replace(/(yexca(?:\s*です)?[.。]?)/, "<span>$1</span>");
+      node.innerHTML = localizeTitle(value);
       return;
     }
     node.textContent = value;
@@ -299,6 +245,7 @@ function applyLanguage(language) {
   document.querySelectorAll("[data-i18n-aria]").forEach((node) => {
     node.setAttribute("aria-label", t(node.dataset.i18nAria));
   });
+
   document.getElementById("languageSelect").value = currentLanguage;
   updateLocalizedLinks();
   renderCachedDynamicContent();
@@ -307,11 +254,11 @@ function applyLanguage(language) {
 function loadDisplaySettings() {
   try {
     return {
-      ...defaultDisplaySettings,
+      ...config.defaultDisplaySettings,
       ...JSON.parse(localStorage.getItem("displaySettings")),
     };
   } catch {
-    return { ...defaultDisplaySettings };
+    return { ...config.defaultDisplaySettings };
   }
 }
 
@@ -322,10 +269,10 @@ function saveDisplaySettings(settings) {
 function applyDisplaySettings(settings) {
   const backgroundPreset = ["soft", "heavy", "frosted", "mdui"].includes(settings.backgroundPreset)
     ? settings.backgroundPreset
-    : defaultDisplaySettings.backgroundPreset;
+    : config.defaultDisplaySettings.backgroundPreset;
   const textPreset = ["white", "pink", "black"].includes(settings.textPreset)
     ? settings.textPreset
-    : defaultDisplaySettings.textPreset;
+    : config.defaultDisplaySettings.textPreset;
 
   document.documentElement.dataset.bgPreset = backgroundPreset;
   document.documentElement.dataset.textPreset = textPreset;
@@ -371,7 +318,7 @@ function setupDisplaySettings() {
   });
 
   resetButton.addEventListener("click", () => {
-    settings = { ...defaultDisplaySettings };
+    settings = { ...config.defaultDisplaySettings };
     applyDisplaySettings(settings);
     saveDisplaySettings(settings);
   });
@@ -387,7 +334,7 @@ function setupDisplaySettings() {
 }
 
 function currentBlogEndpoint() {
-  return BLOG_ENDPOINTS[currentLanguage] ?? BLOG_ENDPOINTS.en;
+  return config.blogEndpoints?.[currentLanguage] ?? config.blogEndpoints?.en;
 }
 
 function updateLocalizedLinks() {
@@ -397,6 +344,10 @@ function updateLocalizedLinks() {
   });
   document.querySelectorAll("[data-rss-link]").forEach((link) => {
     link.href = endpoint.feed;
+  });
+  document.querySelectorAll("[data-vr-link-index]").forEach((link) => {
+    const item = config.vrLinks?.[Number(link.dataset.vrLinkIndex)];
+    if (item) link.href = localizedHref(item);
   });
 }
 
@@ -418,7 +369,7 @@ async function loadPosts() {
     const xml = new DOMParser().parseFromString(await response.text(), "text/xml");
     cachedPosts = [...xml.querySelectorAll("item")].slice(0, 3).map((item) => ({
       title: item.querySelector("title")?.textContent?.trim() || t("fallbackPostTitle"),
-      href: item.querySelector("link")?.textContent?.trim() || "https://blog.yexca.net/",
+      href: item.querySelector("link")?.textContent?.trim() || currentBlogEndpoint().blog,
       date: item.querySelector("pubDate")?.textContent || "",
     }));
     loadedPostLanguage = currentLanguage;
@@ -428,18 +379,86 @@ async function loadPosts() {
   }
 }
 
+async function fetchGithubJson(url) {
+  const response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+  if (!response.ok) throw new Error("GitHub unavailable");
+  return response.json();
+}
+
+function shortCommitMessage(message) {
+  return message?.split("\n")[0]?.trim() || t("commit");
+}
+
+function ignoredCommitAuthors() {
+  return new Set(
+    (config.githubIgnoredCommitAuthors ?? [])
+      .map((author) => author.toLowerCase())
+      .concat(["bot", "github-actions[bot]", "github-actions"]),
+  );
+}
+
+function isBotCommit(commit) {
+  const ignored = ignoredCommitAuthors();
+  const ignoredPrefixes = config.githubIgnoredCommitMessagePrefixes ?? [];
+  const message = commit.commit?.message?.trim().toLowerCase() ?? "";
+  const values = [
+    commit.author?.login,
+    commit.author?.type,
+    commit.committer?.login,
+    commit.committer?.type,
+    commit.commit?.author?.name,
+    commit.commit?.author?.email,
+    commit.commit?.committer?.name,
+    commit.commit?.committer?.email,
+  ]
+    .filter(Boolean)
+    .map((value) => value.toLowerCase());
+
+  return (
+    values.some((value) => value.includes("[bot]") || ignored.has(value) || value.includes("github-actions")) ||
+    ignoredPrefixes.some((prefix) => message.startsWith(prefix.toLowerCase()))
+  );
+}
+
+async function loadDisplayCommit(repo) {
+  try {
+    const commits = await fetchGithubJson(`https://api.github.com/repos/${repo.full_name}/commits?per_page=20`);
+    const commit = commits[0];
+    if (!commit || isBotCommit(commit)) return null;
+    return {
+      message: shortCommitMessage(commit.commit?.message),
+      href: commit.html_url,
+    };
+  } catch {
+    return null;
+  }
+}
+
 async function loadRepos() {
   const repos = document.getElementById("repos");
   try {
-    const responses = await Promise.all(
-      GITHUB_REPOS.map((url) => fetch(url, { headers: { Accept: "application/vnd.github+json" } })),
-    );
-    const payloads = await Promise.all(responses.map((response) => response.json()));
-    cachedRepos = payloads
+    const repoResults = await Promise.allSettled((config.githubRepos ?? []).map(fetchGithubJson));
+    const candidateRepos = repoResults
+      .filter((result) => result.status === "fulfilled")
+      .map((result) => result.value)
       .flat()
       .filter((repo) => !repo.fork)
-      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-      .slice(0, 3);
+      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+    cachedRepos = [];
+    for (const repo of candidateRepos) {
+      const commit = await loadDisplayCommit(repo);
+      if (!commit) continue;
+      cachedRepos.push({
+        name: repo.name,
+        href: repo.html_url,
+        date: repo.updated_at,
+        commit,
+      });
+      if (cachedRepos.length === 3) break;
+    }
+
+    if (!cachedRepos.length) throw new Error("No GitHub activity");
 
     renderRepos();
   } catch {
@@ -477,13 +496,16 @@ function renderRepos() {
       const link = document.createElement("a");
       const name = document.createElement("strong");
       const meta = document.createElement("span");
+      const commit = document.createElement("small");
 
       link.className = "repo-pill";
-      link.href = repo.html_url;
+      link.href = repo.href;
       name.textContent = repo.name;
-      meta.textContent = `${t("updated")} ${formatDate(repo.updated_at)}`;
+      meta.textContent = `${t("updated")} ${formatDate(repo.date)}`;
+      commit.textContent = repo.commit ? `${t("commit")}: ${repo.commit.message}` : "";
 
       link.append(name, meta);
+      if (commit.textContent) link.append(commit);
       return link;
     }),
   );
@@ -494,21 +516,31 @@ function renderCachedDynamicContent() {
   renderRepos();
 }
 
-document.getElementById("languageSelect").addEventListener("change", (event) => {
-  applyLanguage(event.target.value);
-  if (loadedPostLanguage !== currentLanguage) {
-    loadPosts();
-  }
-});
-
-applyLanguage(currentLanguage);
-setupDisplaySettings();
-loadPosts();
-loadRepos();
+function setupLanguageSelect() {
+  const select = document.getElementById("languageSelect");
+  select.addEventListener("change", (event) => {
+    applyLanguage(event.target.value);
+    if (loadedPostLanguage !== currentLanguage) {
+      loadPosts();
+    }
+  });
+}
 
 function updateTopbarGlass() {
   document.getElementById("topbar").classList.toggle("is-glass", window.scrollY > 28);
 }
 
-window.addEventListener("scroll", updateTopbarGlass, { passive: true });
-updateTopbarGlass();
+async function init() {
+  await loadConfig();
+  applyStaticConfig();
+  currentLanguage = detectLanguage();
+  applyLanguage(currentLanguage);
+  setupLanguageSelect();
+  setupDisplaySettings();
+  loadPosts();
+  loadRepos();
+  window.addEventListener("scroll", updateTopbarGlass, { passive: true });
+  updateTopbarGlass();
+}
+
+init();

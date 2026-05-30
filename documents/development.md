@@ -8,7 +8,8 @@ The page is composed of:
 
 - `index.html` for semantic page structure
 - `style.css` for visual design and responsive layout
-- `script.js` for language switching, external content loading, and display settings
+- `script.js` for config loading, language switching, external content loading, and display settings
+- `site.config.json` for editable site content and external links
 - `img/` for local image assets
 
 ## Design Direction
@@ -36,7 +37,7 @@ https://www.pixiv.net/artworks/76371065
 
 ## Internationalization
 
-Translations live in the `translations` object in `script.js`.
+Translations live in the `translations` object in `site.config.json`.
 
 Supported language keys:
 
@@ -52,13 +53,13 @@ Language selection flow:
 3. Match Simplified Chinese, Traditional Chinese, Japanese, or English.
 4. Fall back to English.
 
-When adding text to `index.html`, use `data-i18n="key"` and add the same key to every language block in `script.js`.
+When adding text to `index.html`, use `data-i18n="key"` and add the same key to every language block in `site.config.json`.
 
 For accessible labels, use `data-i18n-aria="key"`.
 
 ## Blog RSS
 
-Blog endpoints are language-specific and stored in `BLOG_ENDPOINTS` in `script.js`.
+Blog endpoints are language-specific and stored in `blogEndpoints` in `site.config.json`.
 
 Current mapping:
 
@@ -71,14 +72,42 @@ The page loads the latest three entries for the current language. When the langu
 
 ## GitHub Activity
 
-Recent GitHub repositories are loaded from the public GitHub API:
+Recent GitHub repositories and commits are loaded from the public GitHub API:
 
 - `yexca`
 - `yexca-VRChat`
 
-The repositories are merged, forked repositories are ignored, and the most recently updated three are shown.
+The page loads recently updated repositories from `githubRepos`. Forked repositories are ignored, and each candidate repository is checked by its latest commit. If that commit looks bot-generated or matches a generated deployment prefix, the repository is skipped and the next most recently updated repository is checked. The page shows the first three repositories that pass this filter, including the latest commit message on each card.
 
 If GitHub loading fails, the static selected project cards still remain visible.
+
+## Editable Content
+
+Most page content is configured in `site.config.json`.
+
+Common edits:
+
+- Update selected project cards in `projects`.
+- Update VRChat buttons in `vrLinks`. A button can use a single `href` or language-specific `hrefs`.
+- Update interest chips in `interests`.
+- Update footer credit in `footerCredit`.
+- Update external links in `links`.
+- Update translations in `translations`.
+- Update RSS endpoints in `blogEndpoints`.
+- Update GitHub repository activity sources in `githubRepos`.
+- Update ignored commit authors in `githubIgnoredCommitAuthors`.
+- Update ignored generated commit message prefixes in `githubIgnoredCommitMessagePrefixes`.
+- Update NOW categories in `nowItems`.
+- Update the NOW card timestamp with the `nowUpdated` translation key in every language block.
+- Update default visual presets in `defaultDisplaySettings`.
+
+The NOW card uses a lightweight animated status dot and ends with a localized "Last updated" line. Keep this timestamp short so it stays unobtrusive at the bottom of the card.
+
+The graduation design project currently points to:
+
+`https://github.com/yexca/data-element-docker`
+
+Project cards can be marked as disabled with `"disabled": true`; this is used for the current Coming soon card.
 
 ## Display Settings
 
@@ -107,6 +136,7 @@ Upload these files and folders to a static host:
 - `index.html`
 - `style.css`
 - `script.js`
+- `site.config.json`
 - `img/`
 
 The `documents/` folder is for repository documentation and does not need to be deployed.

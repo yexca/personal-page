@@ -9,9 +9,9 @@
       content="Personal homepage of yexca: writing, engineering, projects, and VRChat notes."
     >
     <title>yexca</title>
-    <link rel="icon" href="img/profile.png" type="image/png">
-    <link rel="apple-touch-icon" href="img/profile.png">
-    <link rel="preload" href="img/background.jpg" as="image">
+    <link rel="icon" href="img/profile.png" type="image/png" data-profile-href>
+    <link rel="apple-touch-icon" href="img/profile.png" data-profile-href>
+    <link rel="preload" href="img/background.jpg" as="image" data-background-href>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -21,7 +21,7 @@
     <header class="topbar" id="topbar">
       <a class="brand" href="#home" aria-label="yexca home">
         <span class="brand-mark">
-          <img src="img/profile.png" alt="">
+          <img src="img/profile.png" alt="" data-profile-src>
         </span>
         <span>yexca</span>
       </a>
@@ -85,10 +85,9 @@
             <p class="eyebrow" data-i18n="nowEyebrow">now</p>
             <span class="pulse" aria-hidden="true"></span>
           </div>
-          <h2 data-i18n="nowTitle">Keeping things understandable.</h2>
-          <p data-i18n="nowCopy">
-            Studying system design, backend architecture, DevOps, cross-platform apps, and the small rituals that keep a personal knowledge base alive.
-          </p>
+          <h2 data-i18n="nowTitle">Current focus.</h2>
+          <div class="category-list" id="nowList"></div>
+          <p class="now-updated" data-i18n="nowUpdated">Last updated: May 2026</p>
         </article>
 
         <article class="card writing-card span-5">
@@ -111,19 +110,7 @@
             <a class="subtle-link" href="https://github.com/yexca?tab=repositories" data-i18n="allRepos">All repos</a>
           </div>
           <h2 data-i18n="projectsTitle">Selected work</h2>
-          <div class="project-list">
-            <a class="project-item" href="https://github.com/yexca/blog" data-project="blog">
-              <span data-i18n="projectBlog">Blog and publishing system</span>
-              <small data-i18n="projectBlogMeta">Hugo, multilingual writing, CI/CD</small>
-            </a>
-            <a class="project-item" href="https://github.com/yexca/PixivDownloader-SQLite" data-project="pixiv">
-              <span data-i18n="projectPixiv">PixivDownloader-SQLite</span>
-              <small data-i18n="projectPixivMeta">Desktop utility, SQLite, media archiving</small>
-            </a>
-            <a class="project-item" href="https://github.com/yexca/Data-element-market" data-project="dataMarket">
-              <span data-i18n="projectData">Graduation design system</span>
-              <small data-i18n="projectDataMeta">Data element market, full-stack system practice</small>
-            </a>
+          <div class="project-list" id="projectList">
           </div>
           <p class="section-note" data-i18n="githubActivity">Recent GitHub activity</p>
           <div class="repo-strip" id="repos" aria-live="polite"></div>
@@ -135,35 +122,24 @@
           <p data-i18n="vrCopy">
             Tutorials and experiments around VRChat, 3D models, Blender, Unity, and the patient work of making a world feel usable.
           </p>
-          <a class="button compact" href="https://github.com/yexca-VRChat" data-i18n="vrLink">VRChat GitHub</a>
+          <div class="mini-actions" id="vrLinks"></div>
         </article>
 
         <article class="card interests-card span-4">
           <p class="eyebrow" data-i18n="interestsEyebrow">interests</p>
           <h2 data-i18n="interestsTitle">Things I keep returning to</h2>
-          <ul class="tag-list" aria-label="Interests">
-            <li data-i18n="interestBackend">Backend architecture</li>
-            <li data-i18n="interestDevops">DevOps</li>
-            <li data-i18n="interestLinux">Linux</li>
-            <li data-i18n="interestApps">Cross-platform apps</li>
-            <li data-i18n="interestWriting">Writing</li>
-            <li data-i18n="interestVR">Virtual creation</li>
-          </ul>
+          <div class="category-list" id="interestList" aria-label="Interests"></div>
         </article>
 
         <article class="card links-card span-4">
           <p class="eyebrow" data-i18n="linksEyebrow">links</p>
-          <nav class="link-grid" aria-label="Links">
-            <a href="https://blog.yexca.net/" data-blog-link>Blog</a>
-            <a href="https://github.com/yexca">GitHub</a>
-            <a href="https://github.com/yexca-VRChat">VRChat</a>
-            <a href="https://lit.link/yexca">lit.link</a>
+          <nav class="link-grid" id="linkGrid" aria-label="Links">
           </nav>
         </article>
 
         <aside class="card quote-card span-12">
           <p data-i18n="quote">There is no such thing as no possible. It is just because of the lack of imagination.</p>
-          <small class="credit">
+          <small class="credit" id="footerCredit">
             © 2026 yexca. Background source:
             <a href="https://www.pixiv.net/artworks/76371065">pixiv artwork 76371065</a>.
           </small>
