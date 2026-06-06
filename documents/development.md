@@ -72,12 +72,12 @@ The page loads the latest three entries for the current language. When the langu
 
 ## GitHub Activity
 
-Recent GitHub repositories and commits are loaded from the public GitHub API:
+Recent GitHub repositories, commits, and pull requests are loaded from the public GitHub API:
 
 - `yexca`
 - `yexca-VRChat`
 
-The page loads recently updated repositories from `githubRepos`. Forked repositories are ignored, and each candidate repository is checked by its latest commit. If that commit looks bot-generated or matches a generated deployment prefix, the repository is skipped and the next most recently updated repository is checked. The page shows the first three repositories that pass this filter, including the latest commit message on each card.
+The page loads recently updated repositories from `githubRepos`. Forked repositories are ignored, and each candidate repository is checked by its latest commit. If that commit looks bot-generated or matches a generated deployment prefix, the repository is skipped and the next most recently updated repository is checked. Pull request activity is loaded from `githubPullRequests`. Repository and pull request activity is merged by update time, and the page shows the first three items.
 
 If GitHub loading fails, the static selected project cards still remain visible.
 
@@ -95,6 +95,7 @@ Common edits:
 - Update translations in `translations`.
 - Update RSS endpoints in `blogEndpoints`.
 - Update GitHub repository activity sources in `githubRepos`.
+- Update GitHub pull request activity sources in `githubPullRequests`.
 - Update ignored commit authors in `githubIgnoredCommitAuthors`.
 - Update ignored generated commit message prefixes in `githubIgnoredCommitMessagePrefixes`.
 - Update NOW categories in `nowItems`.

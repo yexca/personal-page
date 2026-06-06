@@ -34,6 +34,10 @@
     "https://api.github.com/users/yexca/repos?sort=updated&per_page=6",
     "https://api.github.com/users/yexca-VRChat/repos?sort=updated&per_page=4"
   ],
+  "githubPullRequests": [
+    "https://api.github.com/search/issues?q=author%3Ayexca%20type%3Apr&sort=updated&order=desc&per_page=6",
+    "https://api.github.com/search/issues?q=author%3Ayexca-VRChat%20type%3Apr&sort=updated&order=desc&per_page=4"
+  ],
   "githubIgnoredCommitAuthors": [
     "github-actions[bot]",
     "github-actions"
@@ -199,7 +203,8 @@
       "linksEyebrow": "links",
       "quote": "There is no such thing as no possible. It is just because of the lack of imagination.",
       "updated": "Updated",
-      "commit": "Commit"
+      "commit": "Commit",
+      "pullRequest": "PR"
     },
     "zh-CN": {
       "languageLabel": "语言",
@@ -270,7 +275,8 @@
       "linksEyebrow": "链接",
       "quote": "世上没有不可能，只是想象力不够。",
       "updated": "更新于",
-      "commit": "提交"
+      "commit": "提交",
+      "pullRequest": "PR"
     },
     "zh-TW": {
       "languageLabel": "語言",
@@ -341,7 +347,8 @@
       "linksEyebrow": "連結",
       "quote": "世上沒有不可能，只是想像力不夠。",
       "updated": "更新於",
-      "commit": "提交"
+      "commit": "提交",
+      "pullRequest": "PR"
     },
     "ja": {
       "languageLabel": "言語",
@@ -412,7 +419,8 @@
       "linksEyebrow": "links",
       "quote": "不可能なんてない。足りないのは想像力だけ。",
       "updated": "更新",
-      "commit": "コミット"
+      "commit": "コミット",
+      "pullRequest": "PR"
     }
   }
 }

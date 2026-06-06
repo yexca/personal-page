@@ -11,7 +11,7 @@ The page uses plain HTML, CSS, and JavaScript. It has no build step and can be h
 - Browser language detection with English fallback
 - Manual language switcher
 - Blog RSS loading per language
-- Recent GitHub repository cards with latest non-bot commit messages
+- Recent GitHub activity cards with non-bot commit messages and pull requests
 - Preset display settings for background style and text color
 - Static assets only
 

@@ -5,6 +5,7 @@ const fallbackConfig = {
   languages: ["en"],
   blogEndpoints: { en: { blog: "https://blog.yexca.net/en/", feed: "https://blog.yexca.net/en/feed.xml" } },
   githubRepos: [],
+  githubPullRequests: [],
   githubIgnoredCommitAuthors: ["github-actions[bot]", "github-actions"],
   githubIgnoredCommitMessagePrefixes: ["deploy:"],
   links: [],
@@ -18,6 +19,7 @@ const fallbackConfig = {
       settingsClose: "Close display settings",
       updated: "Updated",
       commit: "Commit",
+      pullRequest: "PR",
     },
   },
 };
@@ -434,29 +436,67 @@ async function loadDisplayCommit(repo) {
   }
 }
 
+function githubRepoNameFromApiUrl(url) {
+  return url?.replace("https://api.github.com/repos/", "").split("/").slice(-1)[0] ?? "";
+}
+
+async function loadRepositoryActivities() {
+  const repoResults = await Promise.allSettled((config.githubRepos ?? []).map(fetchGithubJson));
+  const candidateRepos = repoResults
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value)
+    .flat()
+    .filter((repo) => !repo.fork)
+    .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+  const activities = [];
+  for (const repo of candidateRepos) {
+    const commit = await loadDisplayCommit(repo);
+    if (!commit) continue;
+    activities.push({
+      name: repo.name,
+      href: repo.html_url,
+      date: repo.updated_at,
+      detail: {
+        labelKey: "commit",
+        message: commit.message,
+      },
+    });
+  }
+
+  return activities;
+}
+
+async function loadPullRequestActivities() {
+  const pullRequestResults = await Promise.allSettled((config.githubPullRequests ?? []).map(fetchGithubJson));
+  return pullRequestResults
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value.items ?? result.value)
+    .flat()
+    .filter((item) => item.pull_request)
+    .map((item) => ({
+      name: githubRepoNameFromApiUrl(item.repository_url) || t("pullRequest"),
+      href: item.html_url,
+      date: item.updated_at,
+      detail: {
+        labelKey: "pullRequest",
+        message: item.title,
+      },
+    }));
+}
+
 async function loadRepos() {
   const repos = document.getElementById("repos");
   try {
-    const repoResults = await Promise.allSettled((config.githubRepos ?? []).map(fetchGithubJson));
-    const candidateRepos = repoResults
-      .filter((result) => result.status === "fulfilled")
-      .map((result) => result.value)
-      .flat()
-      .filter((repo) => !repo.fork)
-      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    const [repoActivities, pullRequestActivities] = await Promise.all([
+      loadRepositoryActivities(),
+      loadPullRequestActivities(),
+    ]);
 
-    cachedRepos = [];
-    for (const repo of candidateRepos) {
-      const commit = await loadDisplayCommit(repo);
-      if (!commit) continue;
-      cachedRepos.push({
-        name: repo.name,
-        href: repo.html_url,
-        date: repo.updated_at,
-        commit,
-      });
-      if (cachedRepos.length === 3) break;
-    }
+    cachedRepos = [...repoActivities, ...pullRequestActivities]
+      .filter((activity) => activity.date)
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 3);
 
     if (!cachedRepos.length) throw new Error("No GitHub activity");
 
@@ -502,7 +542,7 @@ function renderRepos() {
       link.href = repo.href;
       name.textContent = repo.name;
       meta.textContent = `${t("updated")} ${formatDate(repo.date)}`;
-      commit.textContent = repo.commit ? `${t("commit")}: ${repo.commit.message}` : "";
+      commit.textContent = repo.detail ? `${t(repo.detail.labelKey)}: ${repo.detail.message}` : "";
 
       link.append(name, meta);
       if (commit.textContent) link.append(commit);
