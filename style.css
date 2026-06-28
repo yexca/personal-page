@@ -627,6 +627,8 @@ p {
 .project-item,
 .repo-pill,
 .link-grid a {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(var(--text-rgb), 0.14);
   border-radius: 8px;
   background: rgba(var(--text-rgb), 0.055);
@@ -642,6 +644,35 @@ p {
 
 .project-item.is-disabled:hover {
   transform: none;
+}
+
+.project-item::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(var(--text-rgb), 0.12), transparent);
+  content: "";
+  opacity: 0;
+  transform: translateX(-36%);
+  transition:
+    opacity 180ms ease,
+    transform 360ms ease;
+}
+
+.project-item:hover::before {
+  opacity: 1;
+  transform: translateX(36%);
+}
+
+.project-item:nth-child(1) {
+  animation: project-rise 520ms ease both;
+}
+
+.project-item:nth-child(2) {
+  animation: project-rise 520ms 70ms ease both;
+}
+
+.project-item:nth-child(3) {
+  animation: project-rise 520ms 140ms ease both;
 }
 
 .post-item,
@@ -664,6 +695,39 @@ p {
 .project-item small {
   color: rgba(var(--text-rgb), 0.54);
   font-size: 0.82rem;
+}
+
+.project-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 96px;
+  align-content: space-between;
+  gap: 12px;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.project-title-row > span:first-child {
+  overflow-wrap: anywhere;
+  font-weight: 680;
+  line-height: 1.25;
+}
+
+.project-status {
+  flex: 0 0 auto;
+  border: 1px solid rgba(var(--text-rgb), 0.16);
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: rgba(var(--text-rgb), 0.08);
+  color: rgba(var(--text-rgb), 0.7);
+  font-size: 0.68rem;
+  line-height: 1;
 }
 
 .post-item time {
@@ -840,6 +904,18 @@ p {
 
 .credit a {
   border-bottom: 1px solid rgba(var(--text-rgb), 0.28);
+}
+
+@keyframes project-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .sr-only {

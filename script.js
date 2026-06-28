@@ -101,10 +101,15 @@ function renderProjects() {
   list.replaceChildren(
     ...(config.projects ?? []).map((project) => {
       const link = document.createElement("a");
+      const content = document.createElement("span");
+      const head = document.createElement("span");
       const title = document.createElement("span");
       const meta = document.createElement("small");
+      const status = document.createElement("span");
 
       link.className = "project-item";
+      content.className = "project-content";
+      head.className = "project-title-row";
       if (project.disabled) {
         link.classList.add("is-disabled");
         link.setAttribute("aria-disabled", "true");
@@ -114,8 +119,12 @@ function renderProjects() {
       }
       title.dataset.i18n = project.titleKey;
       meta.dataset.i18n = project.metaKey;
+      status.className = "project-status";
+      status.dataset.i18n = project.statusKey ?? "projectStatusRecent";
 
-      link.append(title, meta);
+      head.append(title, status);
+      content.append(head, meta);
+      link.append(content);
       return link;
     }),
   );
