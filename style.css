@@ -680,8 +680,12 @@ p {
   letter-spacing: -0.02em;
 }
 
+/* background-clip: text only paints inside the box, so extend it below the tight
+   line-height to keep descenders and CJK full stops visible. */
 .hero-card h1 span {
   display: block;
+  margin-bottom: -0.2em;
+  padding-bottom: 0.2em;
   background: linear-gradient(100deg, var(--text) 10%, var(--mint) 55%, var(--blue));
   -webkit-background-clip: text;
   background-clip: text;
@@ -690,6 +694,12 @@ p {
 
 html[data-text-preset="pink"] .hero-card h1 span {
   background-image: linear-gradient(100deg, var(--text) 10%, var(--rose) 60%, var(--violet));
+}
+
+/* Traditional Chinese fonts center 、，。 in the em box, which reads as a stray
+   degree sign at display size; use fonts that seat them low for the title only. */
+html[lang="zh-tw"] .hero-card h1 {
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
 }
 
 html[lang="ja"] .hero-card h1 {

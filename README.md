@@ -8,7 +8,7 @@ The page uses plain HTML, CSS, and JavaScript. It has no build step and can be h
 
 - Glass-style bento card layout over a background image
 - In-page section navigation, toolbox (uses) card, and GitHub activity timeline
-- Multilingual UI: English, 简体中文, 繁體中文, 日本語
+- Multilingual UI: English, 简体中文, 正體中文, 日本語
 - Browser language detection with English fallback
 - Manual language switcher
 - Blog RSS loading per language
