@@ -5,7 +5,7 @@
   },
   "assets": {
     "background": "img/background.jpg",
-    "profile": "img/profile.png"
+    "profile": "img/profile.png?v=20261030"
   },
   "defaultDisplaySettings": {
     "backgroundPreset": "soft",

@@ -146,6 +146,17 @@ Upload these files and folders to a static host:
 
 The `documents/` folder is for repository documentation and does not need to be deployed.
 
+### Cache busting
+
+The site sits behind Cloudflare, which caches `style.css`, `script.js`, and images at the edge (about 4 hours) while `index.html` and `site.config.json` are always fetched fresh. If new HTML loads an old script, the page can break.
+
+Asset URLs therefore carry a version query, for example `style.css?v=20261030`. When `style.css`, `script.js`, or an image changes, bump the `v` value in:
+
+- `index.html` (stylesheet, script, favicon, and avatar `img` tags)
+- `site.config.json` (`assets.profile`, and `assets.background` if the background changes)
+
+Alternatively, purge the Cloudflare cache after deploying.
+
 ## Local Checks
 
 Recommended manual checks before publishing:
