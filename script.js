@@ -692,18 +692,31 @@ function updateTopbarGlass() {
 function setupSectionNav() {
   const links = [...document.querySelectorAll("[data-section-link]")];
   const sections = links.map((link) => document.getElementById(link.dataset.sectionLink)).filter(Boolean);
-  if (!("IntersectionObserver" in window) || !sections.length) return;
+  if (!sections.length) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting);
-      if (!visible.length) return;
-      const id = visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0].target.id;
-      links.forEach((link) => link.classList.toggle("is-active", link.dataset.sectionLink === id));
-    },
-    { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5] },
-  );
-  sections.forEach((section) => observer.observe(section));
+  // The active section is the last one whose top has passed a reading line,
+  // or the last section once the page cannot scroll any further.
+  let scheduled = false;
+  const update = () => {
+    scheduled = false;
+    const readingLine = window.innerHeight * 0.35;
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    let current = sections[0];
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= readingLine) current = section;
+    });
+    if (atBottom) current = sections[sections.length - 1];
+    links.forEach((link) => link.classList.toggle("is-active", link.dataset.sectionLink === current.id));
+  };
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  update();
 }
 
 function setupReveal() {
