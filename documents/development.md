@@ -19,9 +19,11 @@ The visual style is a light glass-card interface over a visible background image
 Key ideas:
 
 - The background image remains readable and is not blurred by default.
-- Cards use semi-transparent surfaces with a small amount of blur.
-- The top navigation gains a glass backing only after the page scrolls.
-- The layout uses asymmetric card sizes while still following a stable grid.
+- Cards use semi-transparent surfaces with a small amount of blur, rounded corners, and a soft specular top edge (a light take on Apple's Liquid Glass).
+- The top navigation gains a glass backing only after the page scrolls. On wide screens it also shows in-page section links (Now, Work, Writing, More) that highlight the section in view.
+- The layout is a bento grid: hero + NOW on the first row, full-width selected work, writing + GitHub activity timeline, then VRChat / toolbox / interests, then the quote footer.
+- If `backdrop-filter` is unsupported, glass variables fall back to denser tints so text stays readable.
+- Cards fade in once as they scroll into view; this is skipped when the user prefers reduced motion.
 - Mobile layout becomes a single-column card flow.
 
 ## Assets
@@ -68,7 +70,7 @@ Current mapping:
 - English: `https://blog.yexca.net/en/feed.xml`
 - Japanese: `https://blog.yexca.net/ja/feed.xml`
 
-The page loads the latest three entries for the current language. When the language changes, the RSS feed is reloaded if needed.
+The page loads the latest four entries for the current language. When the language changes, the RSS feed is reloaded if needed.
 
 ## GitHub Activity
 
@@ -77,9 +79,9 @@ Recent GitHub repositories, commits, and pull requests are loaded from the publi
 - `yexca`
 - `yexca-VRChat`
 
-The page loads recently updated repositories from `githubRepos`. Forked repositories are ignored, and each candidate repository is checked by its latest commit. If that commit looks bot-generated or matches a generated deployment prefix, the repository is skipped and the next most recently updated repository is checked. Pull request activity is loaded from `githubPullRequests`. Repository and pull request activity is merged by update time, and the page shows the first three items.
+The page loads recently updated repositories from `githubRepos`. Forked repositories are ignored, and each candidate repository is checked by its latest commit. If that commit looks bot-generated or matches a generated deployment prefix, the repository is skipped and the next most recently updated repository is checked. Pull request activity is loaded from `githubPullRequests`. Repository and pull request activity is merged by update time, and the page shows the first four items as a timeline.
 
-If GitHub loading fails, the static selected project cards still remain visible.
+If GitHub loading fails, the timeline shows a single link to the GitHub profile, and the static selected project cards still remain visible.
 
 ## Editable Content
 
@@ -90,6 +92,8 @@ Common edits:
 - Update selected project cards in `projects`.
 - Update VRChat buttons in `vrLinks`. A button can use a single `href` or language-specific `hrefs`.
 - Update interest chips in `interests`.
+- Update the toolbox (uses) card in `toolbox`. It uses the same `labelKey` + `items` group shape as `interests` and `nowItems`.
+- Update social links shown in the hero card in `links`.
 - Update footer credit in `footerCredit`.
 - Update external links in `links`.
 - Update translations in `translations`.

@@ -52,14 +52,14 @@
       "href": "mailto:hi@yexca.net"
     },
     {
-      "label": "Bilibili",
-      "icon": "bilibili",
-      "href": "https://space.bilibili.com/318225502"
-    },
-    {
       "label": "YouTube",
       "icon": "youtube",
       "href": "https://www.youtube.com/@yexcano"
+    },
+    {
+      "label": "Bilibili",
+      "icon": "bilibili",
+      "href": "https://space.bilibili.com/318225502"
     },
     {
       "label": "lit.link",
@@ -102,32 +102,42 @@
       "items": ["interestAudio", "interestMediaArchive"]
     },
     {
-      "labelKey": "interestEngineeringHabits",
-      "items": ["interestDocker", "interestDevContainer", "interestLightDeploy"]
-    },
-    {
       "labelKey": "interestPersonalTaste",
       "items": ["interestRhythmGames", "interestFutureBass"]
     }
   ],
+  "toolbox": [
+    {
+      "labelKey": "toolBuild",
+      "items": ["interestDocker", "interestDevContainer", "toolSqlite"]
+    },
+    {
+      "labelKey": "toolPublish",
+      "items": ["toolHugo", "toolCiCd", "interestLightDeploy"]
+    },
+    {
+      "labelKey": "toolCreate",
+      "items": ["toolBlender", "toolUnity"]
+    }
+  ],
   "projects": [
     {
-      "href": "https://github.com/yexca/PixivDownloader-WebUI",
-      "titleKey": "projectPixivWebui",
-      "metaKey": "projectPixivWebuiMeta",
+      "href": "https://github.com/yexca/kikoto",
+      "titleKey": "projectKikoto",
+      "metaKey": "projectKikotoMeta",
       "statusKey": "projectStatusActive"
     },
     {
-      "href": "https://github.com/yexca/zeroclaw-dockyard",
-      "titleKey": "projectZeroclaw",
-      "metaKey": "projectZeroclawMeta",
+      "href": "https://github.com/yexca/kano-navi",
+      "titleKey": "projectKanoNavi",
+      "metaKey": "projectKanoNaviMeta",
       "statusKey": "projectStatusActive"
     },
     {
-      "href": "https://github.com/yexca/yasumi-project-deploy",
-      "titleKey": "projectYasumi",
-      "metaKey": "projectYasumiMeta",
-      "statusKey": "projectStatusRecent"
+      "href": "https://github.com/yexca/rainy",
+      "titleKey": "projectRainy",
+      "metaKey": "projectRainyMeta",
+      "statusKey": "projectStatusActive"
     }
   ],
   "footerCredit": {
@@ -159,7 +169,7 @@
       "nowLightweight": "Lightweight",
       "nowReproducible": "Reproducible",
       "nowUnderstandable": "Understandable",
-      "nowUpdated": "Last updated: June 2026",
+      "nowUpdated": "Last updated: October 2026",
       "writingEyebrow": "writing",
       "rss": "RSS",
       "writingTitle": "Latest notes",
@@ -170,12 +180,12 @@
       "projectsTitle": "Recent work",
       "projectBlog": "Blog and publishing system",
       "projectBlogMeta": "Hugo, multilingual writing, CI/CD",
-      "projectPixivWebui": "PixivDownloader-WebUI",
-      "projectPixivWebuiMeta": "Local Pixiv archive WebUI, SQLite metadata, Docker workflow",
-      "projectZeroclaw": "zeroclaw-dockyard",
-      "projectZeroclawMeta": "Local WebUI manager for multiple ZeroClaw Matrix agents",
-      "projectYasumi": "yasumi-project-deploy",
-      "projectYasumiMeta": "Full-stack deployment setup and operations notes for Yasumi",
+      "projectKikoto": "Kikoto",
+      "projectKikotoMeta": "Self-hosted audio library, lyrics workshop, and player for DLsite works you own",
+      "projectKanoNavi": "Kano Navi",
+      "projectKanoNaviMeta": "Fan board for Kano Mahoro: next stream, schedule, posts, and journey",
+      "projectRainy": "Rainy",
+      "projectRainyMeta": "Self-hosted NAS music server with a Subsonic API and in-browser library management",
       "projectStatusActive": "Active",
       "projectStatusRecent": "Recent",
       "githubActivity": "Recent GitHub activity",
@@ -215,7 +225,24 @@
       "quote": "There is no such thing as no possible. It is just because of the lack of imagination.",
       "updated": "Updated",
       "commit": "Commit",
-      "pullRequest": "PR"
+      "pullRequest": "PR",
+      "navNow": "Now",
+      "navWork": "Work",
+      "navWriting": "Writing",
+      "navMore": "More",
+      "activityEyebrow": "activity",
+      "activityLoading": "Loading recent activity…",
+      "activityFallback": "See recent activity on GitHub",
+      "toolboxEyebrow": "uses",
+      "toolboxTitle": "Toolbox",
+      "toolBuild": "Build",
+      "toolPublish": "Publish",
+      "toolCreate": "Create",
+      "toolSqlite": "SQLite",
+      "toolHugo": "Hugo",
+      "toolCiCd": "CI/CD",
+      "toolBlender": "Blender",
+      "toolUnity": "Unity"
     },
     "zh-CN": {
       "languageLabel": "语言",
@@ -239,7 +266,7 @@
       "nowLightweight": "轻量",
       "nowReproducible": "可复现",
       "nowUnderstandable": "易理解",
-      "nowUpdated": "最后更新：2026 年 6 月",
+      "nowUpdated": "最后更新：2026 年 10 月",
       "writingEyebrow": "写作",
       "rss": "RSS",
       "writingTitle": "最新记录",
@@ -250,12 +277,12 @@
       "projectsTitle": "最近在做",
       "projectBlog": "博客与发布系统",
       "projectBlogMeta": "Hugo、多语言写作、CI/CD",
-      "projectPixivWebui": "PixivDownloader-WebUI",
-      "projectPixivWebuiMeta": "本地 Pixiv 归档 WebUI、SQLite 元数据、Docker 工作流",
-      "projectZeroclaw": "zeroclaw-dockyard",
-      "projectZeroclawMeta": "管理多个 ZeroClaw Matrix Agent 的本地 WebUI",
-      "projectYasumi": "yasumi-project-deploy",
-      "projectYasumiMeta": "Yasumi 的全栈部署环境与运维文档",
+      "projectKikoto": "Kikoto",
+      "projectKikotoMeta": "为已购 DLsite 作品打造的自托管音声库、歌词工坊与播放器",
+      "projectKanoNavi": "Kano Navi",
+      "projectKanoNaviMeta": "鹿乃まほろ的粉丝看板：下一场直播、日程、动态与历程",
+      "projectRainy": "Rainy",
+      "projectRainyMeta": "面向 NAS 的自托管音乐服务器，支持 Subsonic API 与浏览器内曲库管理",
       "projectStatusActive": "进行中",
       "projectStatusRecent": "近期",
       "githubActivity": "近期 GitHub 更新",
@@ -295,7 +322,24 @@
       "quote": "世上没有不可能，只是想象力不够。",
       "updated": "更新于",
       "commit": "提交",
-      "pullRequest": "PR"
+      "pullRequest": "PR",
+      "navNow": "现在",
+      "navWork": "项目",
+      "navWriting": "写作",
+      "navMore": "更多",
+      "activityEyebrow": "动态",
+      "activityLoading": "正在加载近期动态…",
+      "activityFallback": "去 GitHub 查看近期动态",
+      "toolboxEyebrow": "工具",
+      "toolboxTitle": "常用工具箱",
+      "toolBuild": "开发",
+      "toolPublish": "发布",
+      "toolCreate": "创作",
+      "toolSqlite": "SQLite",
+      "toolHugo": "Hugo",
+      "toolCiCd": "CI/CD",
+      "toolBlender": "Blender",
+      "toolUnity": "Unity"
     },
     "zh-TW": {
       "languageLabel": "語言",
@@ -319,7 +363,7 @@
       "nowLightweight": "輕量",
       "nowReproducible": "可重現",
       "nowUnderstandable": "易理解",
-      "nowUpdated": "最後更新：2026 年 6 月",
+      "nowUpdated": "最後更新：2026 年 10 月",
       "writingEyebrow": "寫作",
       "rss": "RSS",
       "writingTitle": "最新記錄",
@@ -330,12 +374,12 @@
       "projectsTitle": "最近在做",
       "projectBlog": "部落格與發布系統",
       "projectBlogMeta": "Hugo、多語言寫作、CI/CD",
-      "projectPixivWebui": "PixivDownloader-WebUI",
-      "projectPixivWebuiMeta": "本地 Pixiv 歸檔 WebUI、SQLite 元資料、Docker 工作流",
-      "projectZeroclaw": "zeroclaw-dockyard",
-      "projectZeroclawMeta": "管理多個 ZeroClaw Matrix Agent 的本地 WebUI",
-      "projectYasumi": "yasumi-project-deploy",
-      "projectYasumiMeta": "Yasumi 的全端部署環境與維運文件",
+      "projectKikoto": "Kikoto",
+      "projectKikotoMeta": "為已購 DLsite 作品打造的自架音聲庫、歌詞工坊與播放器",
+      "projectKanoNavi": "Kano Navi",
+      "projectKanoNaviMeta": "鹿乃まほろ的粉絲看板：下一場直播、日程、動態與歷程",
+      "projectRainy": "Rainy",
+      "projectRainyMeta": "面向 NAS 的自架音樂伺服器，支援 Subsonic API 與瀏覽器內曲庫管理",
       "projectStatusActive": "進行中",
       "projectStatusRecent": "近期",
       "githubActivity": "近期 GitHub 更新",
@@ -375,7 +419,24 @@
       "quote": "世上沒有不可能，只是想像力不夠。",
       "updated": "更新於",
       "commit": "提交",
-      "pullRequest": "PR"
+      "pullRequest": "PR",
+      "navNow": "現在",
+      "navWork": "專案",
+      "navWriting": "寫作",
+      "navMore": "更多",
+      "activityEyebrow": "動態",
+      "activityLoading": "正在載入近期動態…",
+      "activityFallback": "到 GitHub 查看近期動態",
+      "toolboxEyebrow": "工具",
+      "toolboxTitle": "常用工具箱",
+      "toolBuild": "開發",
+      "toolPublish": "發布",
+      "toolCreate": "創作",
+      "toolSqlite": "SQLite",
+      "toolHugo": "Hugo",
+      "toolCiCd": "CI/CD",
+      "toolBlender": "Blender",
+      "toolUnity": "Unity"
     },
     "ja": {
       "languageLabel": "言語",
@@ -399,7 +460,7 @@
       "nowLightweight": "軽量",
       "nowReproducible": "再現可能",
       "nowUnderstandable": "わかりやすい",
-      "nowUpdated": "最終更新：2026年6月",
+      "nowUpdated": "最終更新：2026年10月",
       "writingEyebrow": "writing",
       "rss": "RSS",
       "writingTitle": "最近の記事",
@@ -410,12 +471,12 @@
       "projectsTitle": "最近の制作",
       "projectBlog": "ブログと公開システム",
       "projectBlogMeta": "Hugo、多言語記事、CI/CD",
-      "projectPixivWebui": "PixivDownloader-WebUI",
-      "projectPixivWebuiMeta": "ローカル Pixiv アーカイブ WebUI、SQLite メタデータ、Docker ワークフロー",
-      "projectZeroclaw": "zeroclaw-dockyard",
-      "projectZeroclawMeta": "複数の ZeroClaw Matrix Agent を管理するローカル WebUI",
-      "projectYasumi": "yasumi-project-deploy",
-      "projectYasumiMeta": "Yasumi のフルスタックデプロイ環境と運用メモ",
+      "projectKikoto": "Kikoto",
+      "projectKikotoMeta": "購入済み DLsite 作品のためのセルフホスト型音声ライブラリ・歌詞工房・プレーヤー",
+      "projectKanoNavi": "Kano Navi",
+      "projectKanoNaviMeta": "鹿乃まほろさんの次の配信、スケジュール、投稿、歩みをまとめたファンボード",
+      "projectRainy": "Rainy",
+      "projectRainyMeta": "Subsonic API とブラウザ上のライブラリ管理を備えた NAS 向けセルフホスト音楽サーバー",
       "projectStatusActive": "進行中",
       "projectStatusRecent": "最近",
       "githubActivity": "最近の GitHub 更新",
@@ -455,7 +516,24 @@
       "quote": "不可能なんてない。足りないのは想像力だけ。",
       "updated": "更新",
       "commit": "コミット",
-      "pullRequest": "PR"
+      "pullRequest": "PR",
+      "navNow": "Now",
+      "navWork": "制作",
+      "navWriting": "記事",
+      "navMore": "その他",
+      "activityEyebrow": "activity",
+      "activityLoading": "最近のアクティビティを読み込み中…",
+      "activityFallback": "GitHub で最近のアクティビティを見る",
+      "toolboxEyebrow": "uses",
+      "toolboxTitle": "道具箱",
+      "toolBuild": "開発",
+      "toolPublish": "公開",
+      "toolCreate": "制作",
+      "toolSqlite": "SQLite",
+      "toolHugo": "Hugo",
+      "toolCiCd": "CI/CD",
+      "toolBlender": "Blender",
+      "toolUnity": "Unity"
     }
   }
 }

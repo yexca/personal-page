@@ -26,22 +26,33 @@
         <span>yexca</span>
       </a>
 
+      <nav class="section-nav" aria-label="Sections">
+        <a href="#now" data-section-link="now" data-i18n="navNow">Now</a>
+        <a href="#work" data-section-link="work" data-i18n="navWork">Work</a>
+        <a href="#writing" data-section-link="writing" data-i18n="navWriting">Writing</a>
+        <a href="#more" data-section-link="more" data-i18n="navMore">More</a>
+      </nav>
+
       <div class="top-actions">
-        <label class="language-control">
-          <span class="sr-only" data-i18n="languageLabel">Language</span>
-          <select id="languageSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="zh-CN">简体中文</option>
-            <option value="zh-TW">繁體中文</option>
-            <option value="ja">日本語</option>
-          </select>
-        </label>
+        <button class="icon-button" id="languageButton" type="button" aria-expanded="false" aria-controls="languagePanel" data-i18n-aria="languageLabel">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+        </button>
         <button class="icon-button" id="settingsButton" type="button" aria-expanded="false" aria-controls="settingsPanel" data-i18n-aria="settingsOpen">
-          <span aria-hidden="true">⚙</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
         </button>
       </div>
 
-      <section class="settings-panel" id="settingsPanel" aria-label="Display settings" hidden>
+      <section class="popover-panel language-panel" id="languagePanel" aria-label="Language" hidden>
+        <p class="eyebrow" data-i18n="languageLabel">Language</p>
+        <div class="language-list" role="group" aria-label="Language">
+          <button type="button" data-language="en" lang="en">English</button>
+          <button type="button" data-language="zh-CN" lang="zh-CN">简体中文</button>
+          <button type="button" data-language="zh-TW" lang="zh-TW">繁體中文</button>
+          <button type="button" data-language="ja" lang="ja">日本語</button>
+        </div>
+      </section>
+
+      <section class="popover-panel settings-panel" id="settingsPanel" aria-label="Display settings" hidden>
         <div class="settings-head">
           <p class="eyebrow" data-i18n="settingsTitle">Display</p>
           <button class="subtle-button" id="settingsReset" type="button" data-i18n="settingsReset">Reset</button>
@@ -68,58 +79,94 @@
 
     <main id="home" class="shell">
       <section class="grid" aria-label="yexca profile">
-        <article class="card hero-card span-7">
-          <p class="eyebrow" data-i18n="heroEyebrow">personal space</p>
-          <h1 data-i18n="heroTitle">Hi, I'm yexca.</h1>
-          <p class="hero-copy" data-i18n="heroCopy">
-            I write code, organize knowledge, tinker with systems, and build little bridges between engineering and virtual worlds.
-          </p>
-          <div class="hero-actions" aria-label="Primary links">
-            <a class="button primary" href="https://blog.yexca.net/" data-blog-link data-i18n="visitBlog">Visit blog</a>
-            <a class="button" href="https://github.com/yexca" data-i18n="github">GitHub</a>
+        <article class="card hero-card span-8">
+          <div class="hero-identity">
+            <span class="avatar">
+              <img src="img/profile.png" alt="" data-profile-src>
+            </span>
+            <div>
+              <p class="eyebrow" data-i18n="heroEyebrow">personal space</p>
+              <p class="hero-handle">@yexca</p>
+            </div>
+          </div>
+          <div class="hero-body">
+            <h1 data-i18n="heroTitle">Hi, I'm yexca.</h1>
+            <p class="hero-copy" data-i18n="heroCopy">
+              I build local AI workflows, automation tools, and knowledge systems, then keep folding them back into writing and virtual creation.
+            </p>
+          </div>
+          <div class="hero-footer">
+            <div class="hero-actions" aria-label="Primary links">
+              <a class="button primary" href="https://blog.yexca.net/" data-blog-link>
+                <span data-i18n="visitBlog">Visit blog</span>
+                <span class="button-arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="button" href="https://github.com/yexca" data-i18n="github">GitHub</a>
+            </div>
+            <nav class="social-dock" id="linkGrid" aria-label="Links"></nav>
           </div>
         </article>
 
-        <article class="card status-card span-5">
+        <article class="card status-card span-4" id="now">
           <div class="card-head">
             <p class="eyebrow" data-i18n="nowEyebrow">now</p>
-            <span class="pulse" aria-hidden="true"></span>
+            <span class="now-meta">
+              <span class="now-updated" data-i18n="nowUpdated">Last updated: October 2026</span>
+              <span class="pulse" aria-hidden="true"></span>
+            </span>
           </div>
           <h2 data-i18n="nowTitle">Current focus.</h2>
           <p data-i18n="nowCopy">
-            Learning computer vision, AI, lightweight deployment, and still tinkering with the blog as a living knowledge base.
+            Local AI, automation tools, multilingual knowledge systems, and small systems I can keep maintaining.
           </p>
           <div class="category-list" id="nowList"></div>
-          <p class="now-updated" data-i18n="nowUpdated">Last updated: May 2026</p>
         </article>
 
-        <article class="card writing-card span-5">
+        <article class="card projects-card span-12" id="work">
           <div class="card-head">
-            <p class="eyebrow" data-i18n="writingEyebrow">writing</p>
+            <div>
+              <p class="eyebrow" data-i18n="projectsEyebrow">projects</p>
+              <h2 data-i18n="projectsTitle">Selected work</h2>
+            </div>
+            <a class="subtle-link" href="https://github.com/yexca?tab=repositories" data-i18n="allRepos">All repos</a>
+          </div>
+          <div class="project-list" id="projectList"></div>
+        </article>
+
+        <article class="card writing-card span-7" id="writing">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow" data-i18n="writingEyebrow">writing</p>
+              <h2 data-i18n="writingTitle">Latest notes</h2>
+            </div>
             <a class="subtle-link" href="https://blog.yexca.net/feed.xml" data-rss-link data-i18n="rss">RSS</a>
           </div>
-          <h2 data-i18n="writingTitle">Latest notes</h2>
           <div id="posts" class="post-list" aria-live="polite">
             <a class="post-item" href="https://blog.yexca.net/" data-blog-link>
-              <span data-i18n="fallbackPostTitle">Technical notes and life records</span>
               <time data-i18n="fallbackPostDate">Blog</time>
+              <span data-i18n="fallbackPostTitle">Technical notes and life records</span>
             </a>
           </div>
         </article>
 
-        <article class="card projects-card span-7">
+        <article class="card activity-card span-5">
           <div class="card-head">
-            <p class="eyebrow" data-i18n="projectsEyebrow">projects</p>
-            <a class="subtle-link" href="https://github.com/yexca?tab=repositories" data-i18n="allRepos">All repos</a>
+            <div>
+              <p class="eyebrow" data-i18n="activityEyebrow">activity</p>
+              <h2 data-i18n="githubActivity">Recent GitHub activity</h2>
+            </div>
           </div>
-          <h2 data-i18n="projectsTitle">Selected work</h2>
-          <div class="project-list" id="projectList">
-          </div>
-          <p class="section-note" data-i18n="githubActivity">Recent GitHub activity</p>
-          <div class="repo-strip" id="repos" aria-live="polite"></div>
+          <ol class="timeline" id="repos" aria-live="polite">
+            <li class="timeline-item is-loading">
+              <span class="timeline-dot" aria-hidden="true"></span>
+              <span class="timeline-body">
+                <strong data-i18n="activityLoading">Loading…</strong>
+              </span>
+            </li>
+          </ol>
         </article>
 
-        <article class="card vr-card span-4">
+        <article class="card vr-card span-4" id="more">
           <p class="eyebrow" data-i18n="vrEyebrow">vrchat</p>
           <h2 data-i18n="vrTitle">Virtual world notes</h2>
           <p data-i18n="vrCopy">
@@ -128,19 +175,20 @@
           <div class="mini-actions" id="vrLinks"></div>
         </article>
 
+        <article class="card toolbox-card span-4">
+          <p class="eyebrow" data-i18n="toolboxEyebrow">uses</p>
+          <h2 data-i18n="toolboxTitle">Toolbox</h2>
+          <div class="category-list" id="toolboxList" aria-label="Toolbox"></div>
+        </article>
+
         <article class="card interests-card span-4">
           <p class="eyebrow" data-i18n="interestsEyebrow">interests</p>
           <h2 data-i18n="interestsTitle">Things I keep returning to</h2>
           <div class="category-list" id="interestList" aria-label="Interests"></div>
         </article>
 
-        <article class="card links-card span-4">
-          <p class="eyebrow" data-i18n="linksEyebrow">links</p>
-          <nav class="link-grid" id="linkGrid" aria-label="Links">
-          </nav>
-        </article>
-
         <aside class="card quote-card span-12">
+          <span class="quote-mark" aria-hidden="true">“</span>
           <p data-i18n="quote">There is no such thing as no possible. It is just because of the lack of imagination.</p>
           <small class="credit" id="footerCredit">
             © 2026 yexca. Background source:

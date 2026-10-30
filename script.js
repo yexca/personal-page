@@ -12,6 +12,7 @@ const fallbackConfig = {
   nowItems: [],
   projects: [],
   interests: [],
+  toolbox: [],
   translations: {
     en: {
       languageLabel: "Language",
@@ -91,6 +92,7 @@ function applyStaticConfig() {
   renderVrLinks();
   renderNowItems();
   renderInterests();
+  renderToolbox();
   renderFooterCredit();
 }
 
@@ -99,9 +101,12 @@ function renderProjects() {
   if (!list) return;
 
   list.replaceChildren(
-    ...(config.projects ?? []).map((project) => {
+    ...(config.projects ?? []).map((project, index) => {
       const link = document.createElement("a");
       const content = document.createElement("span");
+      const top = document.createElement("span");
+      const number = document.createElement("span");
+      const arrow = document.createElement("span");
       const head = document.createElement("span");
       const title = document.createElement("span");
       const meta = document.createElement("small");
@@ -109,6 +114,12 @@ function renderProjects() {
 
       link.className = "project-item";
       content.className = "project-content";
+      top.className = "project-top";
+      number.className = "project-number";
+      number.textContent = String(index + 1).padStart(2, "0");
+      arrow.className = "project-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "↗";
       head.className = "project-title-row";
       if (project.disabled) {
         link.classList.add("is-disabled");
@@ -122,8 +133,10 @@ function renderProjects() {
       status.className = "project-status";
       status.dataset.i18n = project.statusKey ?? "projectStatusRecent";
 
-      head.append(title, status);
-      content.append(head, meta);
+      top.append(number, status);
+      if (!project.disabled) top.append(arrow);
+      head.append(title);
+      content.append(top, head, meta);
       link.append(content);
       return link;
     }),
@@ -157,6 +170,10 @@ function renderInterests() {
 
 function renderNowItems() {
   renderCategoryList("nowList", config.nowItems ?? []);
+}
+
+function renderToolbox() {
+  renderCategoryList("toolboxList", config.toolbox ?? []);
 }
 
 function renderCategoryList(id, groups) {
@@ -198,9 +215,11 @@ function renderLinks() {
       const icon = document.createElement("span");
       const label = document.createElement("span");
 
+      link.className = "social-link";
       icon.className = "link-icon";
       icon.setAttribute("aria-hidden", "true");
       icon.innerHTML = linkIconSvg(item.icon ?? item.label);
+      label.className = "social-label";
       label.textContent = item.label;
       if (item.hrefKey === "blog") {
         link.dataset.blogLink = "";
@@ -257,7 +276,9 @@ function applyLanguage(language) {
     node.setAttribute("aria-label", t(node.dataset.i18nAria));
   });
 
-  document.getElementById("languageSelect").value = currentLanguage;
+  document.querySelectorAll("[data-language]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.language === currentLanguage));
+  });
   updateLocalizedLinks();
   renderCachedDynamicContent();
 }
@@ -296,6 +317,46 @@ function applyDisplaySettings(settings) {
   });
 }
 
+const popovers = [];
+
+function setupPopover(button, panel, labelKeys) {
+  const setOpen = (open) => {
+    panel.hidden = !open;
+    button.setAttribute("aria-expanded", String(open));
+    if (labelKeys) {
+      button.dataset.i18nAria = open ? labelKeys.close : labelKeys.open;
+      button.setAttribute("aria-label", t(button.dataset.i18nAria));
+    }
+  };
+
+  popovers.push({ button, panel, setOpen });
+  button.addEventListener("click", () => {
+    const isOpening = panel.hidden;
+    popovers.forEach((popover) => popover.setOpen(false));
+    setOpen(isOpening);
+  });
+  return setOpen;
+}
+
+function setupPopoverDismiss() {
+  document.addEventListener("click", (event) => {
+    popovers.forEach((popover) => {
+      if (popover.panel.hidden) return;
+      if (popover.panel.contains(event.target) || popover.button.contains(event.target)) return;
+      popover.setOpen(false);
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    popovers.forEach((popover) => {
+      if (popover.panel.hidden) return;
+      popover.setOpen(false);
+      popover.button.focus();
+    });
+  });
+}
+
 function setupDisplaySettings() {
   const settingsButton = document.getElementById("settingsButton");
   const settingsPanel = document.getElementById("settingsPanel");
@@ -303,14 +364,7 @@ function setupDisplaySettings() {
   let settings = loadDisplaySettings();
 
   applyDisplaySettings(settings);
-
-  settingsButton.addEventListener("click", () => {
-    const isOpening = settingsPanel.hidden;
-    settingsPanel.hidden = !isOpening;
-    settingsButton.setAttribute("aria-expanded", String(isOpening));
-    settingsButton.dataset.i18nAria = isOpening ? "settingsClose" : "settingsOpen";
-    settingsButton.setAttribute("aria-label", t(settingsButton.dataset.i18nAria));
-  });
+  setupPopover(settingsButton, settingsPanel, { open: "settingsOpen", close: "settingsClose" });
 
   document.querySelectorAll("[data-background-preset]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -332,15 +386,6 @@ function setupDisplaySettings() {
     settings = { ...config.defaultDisplaySettings };
     applyDisplaySettings(settings);
     saveDisplaySettings(settings);
-  });
-
-  document.addEventListener("click", (event) => {
-    if (settingsPanel.hidden) return;
-    if (settingsPanel.contains(event.target) || settingsButton.contains(event.target)) return;
-    settingsPanel.hidden = true;
-    settingsButton.setAttribute("aria-expanded", "false");
-    settingsButton.dataset.i18nAria = "settingsOpen";
-    settingsButton.setAttribute("aria-label", t("settingsOpen"));
   });
 }
 
@@ -378,16 +423,25 @@ async function loadPosts() {
     const response = await fetch(currentBlogEndpoint().feed, { cache: "no-store" });
     if (!response.ok) throw new Error("Feed unavailable");
     const xml = new DOMParser().parseFromString(await response.text(), "text/xml");
-    cachedPosts = [...xml.querySelectorAll("item")].slice(0, 3).map((item) => ({
+    cachedPosts = [...xml.querySelectorAll("item")].slice(0, 4).map((item) => ({
       title: item.querySelector("title")?.textContent?.trim() || t("fallbackPostTitle"),
       href: item.querySelector("link")?.textContent?.trim() || currentBlogEndpoint().blog,
       date: item.querySelector("pubDate")?.textContent || "",
+      summary: postSummary(item.querySelector("description")?.textContent),
     }));
     loadedPostLanguage = currentLanguage;
     renderPosts();
   } catch {
     posts.dataset.state = "fallback";
   }
+}
+
+function postSummary(description) {
+  if (!description) return "";
+  // Feed descriptions may carry HTML; read them as text and keep only the opening.
+  const text = new DOMParser().parseFromString(description, "text/html").body.textContent ?? "";
+  const compact = text.replace(/\s+/g, " ").trim();
+  return compact.length > 160 ? `${compact.slice(0, 160).trimEnd()}…` : compact;
 }
 
 async function fetchGithubJson(url) {
@@ -505,14 +559,36 @@ async function loadRepos() {
     cachedRepos = [...repoActivities, ...pullRequestActivities]
       .filter((activity) => activity.date)
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 3);
+      .slice(0, 4);
 
     if (!cachedRepos.length) throw new Error("No GitHub activity");
 
     renderRepos();
   } catch {
-    repos.remove();
+    repos.replaceChildren(timelineFallback());
   }
+}
+
+function timelineFallback() {
+  const item = document.createElement("li");
+  const link = document.createElement("a");
+  const dot = document.createElement("span");
+  const body = document.createElement("span");
+  const title = document.createElement("strong");
+
+  item.className = "timeline-item";
+  link.className = "timeline-link";
+  link.href = "https://github.com/yexca";
+  dot.className = "timeline-dot";
+  dot.setAttribute("aria-hidden", "true");
+  body.className = "timeline-body";
+  title.dataset.i18n = "activityFallback";
+  title.textContent = t("activityFallback");
+
+  body.append(title);
+  link.append(dot, body);
+  item.append(link);
+  return item;
 }
 
 function renderPosts() {
@@ -522,15 +598,24 @@ function renderPosts() {
   posts.replaceChildren(
     ...cachedPosts.map((post) => {
       const link = document.createElement("a");
+      const content = document.createElement("span");
       const title = document.createElement("span");
+      const summary = document.createElement("small");
       const time = document.createElement("time");
 
       link.className = "post-item";
       link.href = post.href;
+      content.className = "post-content";
+      title.className = "post-title";
       title.textContent = post.title;
+      summary.className = "post-summary";
+      summary.textContent = post.summary;
       time.textContent = formatDate(post.date);
+      if (post.date) time.dateTime = new Date(post.date).toISOString();
 
-      link.append(title, time);
+      content.append(title);
+      if (post.summary) content.append(summary);
+      link.append(time, content);
       return link;
     }),
   );
@@ -542,20 +627,37 @@ function renderRepos() {
 
   repos.replaceChildren(
     ...cachedRepos.map((repo) => {
+      const item = document.createElement("li");
       const link = document.createElement("a");
+      const dot = document.createElement("span");
+      const body = document.createElement("span");
+      const head = document.createElement("span");
+      const type = document.createElement("span");
       const name = document.createElement("strong");
-      const meta = document.createElement("span");
-      const commit = document.createElement("small");
+      const message = document.createElement("small");
+      const time = document.createElement("time");
 
-      link.className = "repo-pill";
+      item.className = "timeline-item";
+      link.className = "timeline-link";
       link.href = repo.href;
+      dot.className = "timeline-dot";
+      dot.setAttribute("aria-hidden", "true");
+      body.className = "timeline-body";
+      head.className = "timeline-head";
+      type.className = "timeline-type";
+      type.dataset.kind = repo.detail?.labelKey ?? "commit";
+      type.textContent = t(repo.detail?.labelKey ?? "commit");
       name.textContent = repo.name;
-      meta.textContent = `${t("updated")} ${formatDate(repo.date)}`;
-      commit.textContent = repo.detail ? `${t(repo.detail.labelKey)}: ${repo.detail.message}` : "";
+      message.textContent = repo.detail?.message ?? "";
+      time.textContent = formatDate(repo.date);
 
-      link.append(name, meta);
-      if (commit.textContent) link.append(commit);
-      return link;
+      head.append(type, name);
+      body.append(head);
+      if (message.textContent) body.append(message);
+      body.append(time);
+      link.append(dot, body);
+      item.append(link);
+      return item;
     }),
   );
 }
@@ -565,13 +667,21 @@ function renderCachedDynamicContent() {
   renderRepos();
 }
 
-function setupLanguageSelect() {
-  const select = document.getElementById("languageSelect");
-  select.addEventListener("change", (event) => {
-    applyLanguage(event.target.value);
-    if (loadedPostLanguage !== currentLanguage) {
-      loadPosts();
-    }
+function setupLanguageMenu() {
+  const button = document.getElementById("languageButton");
+  const panel = document.getElementById("languagePanel");
+  const setOpen = setupPopover(button, panel);
+
+  panel.querySelectorAll("[data-language]").forEach((option) => {
+    option.hidden = !supportedLanguages().includes(option.dataset.language);
+    option.addEventListener("click", () => {
+      applyLanguage(option.dataset.language);
+      if (loadedPostLanguage !== currentLanguage) {
+        loadPosts();
+      }
+      setOpen(false);
+      button.focus();
+    });
   });
 }
 
@@ -579,13 +689,53 @@ function updateTopbarGlass() {
   document.getElementById("topbar").classList.toggle("is-glass", window.scrollY > 28);
 }
 
+function setupSectionNav() {
+  const links = [...document.querySelectorAll("[data-section-link]")];
+  const sections = links.map((link) => document.getElementById(link.dataset.sectionLink)).filter(Boolean);
+  if (!("IntersectionObserver" in window) || !sections.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting);
+      if (!visible.length) return;
+      const id = visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0].target.id;
+      links.forEach((link) => link.classList.toggle("is-active", link.dataset.sectionLink === id));
+    },
+    { rootMargin: "-30% 0px -55% 0px", threshold: [0, 0.25, 0.5] },
+  );
+  sections.forEach((section) => observer.observe(section));
+}
+
+function setupReveal() {
+  const cards = document.querySelectorAll(".card");
+  if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -8% 0px" },
+  );
+  cards.forEach((card) => {
+    card.classList.add("reveal");
+    observer.observe(card);
+  });
+}
+
 async function init() {
   await loadConfig();
   applyStaticConfig();
   currentLanguage = detectLanguage();
   applyLanguage(currentLanguage);
-  setupLanguageSelect();
+  setupLanguageMenu();
   setupDisplaySettings();
+  setupPopoverDismiss();
+  setupSectionNav();
+  setupReveal();
   loadPosts();
   loadRepos();
   window.addEventListener("scroll", updateTopbarGlass, { passive: true });
